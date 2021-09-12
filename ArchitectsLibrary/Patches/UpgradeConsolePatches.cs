@@ -12,7 +12,7 @@ namespace ArchitectsLibrary.Patches
         internal static void Patch(Harmony harmony)
         {            
             harmony.Patch(AccessTools.Method(typeof(SubRoot), nameof(SubRoot.SetCyclopsUpgrades)),
-                postfix: new HarmonyMethod(AccessTools.Method(typeof(SubRoot), nameof(SetCyclopsUpgrades_Postfix))));
+                postfix: new HarmonyMethod(AccessTools.Method(typeof(UpgradeConsolePatches), nameof(SetCyclopsUpgrades_Postfix))));
         }
 
         static void SetCyclopsUpgrades_Postfix(SubRoot __instance)
