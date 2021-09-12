@@ -167,11 +167,7 @@ namespace ArchitectsLibrary
                 PrecursorFabricator.Root.GetTabNode(PrecursorFabricatorService.TabToNameID(entry.tab)).AddCraftingNode(entry.techType);
             }
 
-            KnownTechHandler.SetAnalysisTechEntry(alienTechnologyMasterTech, new List<TechType>() { PrecursorFabricator.TechType, TechType.PrecursorIonCrystal, AUHandler.AlienCompositeGlassTechType, AUHandler.ReinforcedGlassTechType, AUHandler.ElectricubeTechType, AUHandler.RedIonCubeTechType });
-
-            var testModule = new Items.CyclopsModuleTest();
-            testModule.Patch();
-            
+            KnownTechHandler.SetAnalysisTechEntry(alienTechnologyMasterTech, new List<TechType>() { PrecursorFabricator.TechType, TechType.PrecursorIonCrystal, AUHandler.AlienCompositeGlassTechType, AUHandler.ReinforcedGlassTechType, AUHandler.ElectricubeTechType, AUHandler.RedIonCubeTechType });            
         }
 
         internal static void IonCubeCraftModelFix(GameObject prefab)
