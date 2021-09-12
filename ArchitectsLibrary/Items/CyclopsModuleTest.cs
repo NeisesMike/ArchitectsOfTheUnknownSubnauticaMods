@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 
 namespace ArchitectsLibrary.Items
 {
-    class CyclopsModuleTest : CyclopsUpgrade, ICyclopsOnEquip
+    class CyclopsModuleTest : CyclopsUpgrade, ICyclopsOnModulesUpdated
     {
         public CyclopsModuleTest() : base("CyclopsModuleTest", LanguageSystem.Default, LanguageSystem.Default)
         {
         }
 
-        public void OnEquip(string slotID, bool equipped, SubRoot sub)
+        public void OnModuleCountChanged(SubRoot cyclops, int modulesCount)
         {
-            ErrorMessage.AddMessage("Test module equipped: " + equipped);
-            ErrorMessage.AddMessage("Sub is null: " + (sub == null));
+            ErrorMessage.AddMessage($"Modules count for {ClassID}: {modulesCount}");;
         }
 
         protected override TechData GetBlueprintRecipe()

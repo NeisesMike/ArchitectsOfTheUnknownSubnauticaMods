@@ -190,7 +190,7 @@
     <Compile Include="Handlers\VehicleHandler.cs" />
     <Compile Include="DictionaryInit.cs" />
     <Compile Include="Interfaces\IBuilderGroups.cs" />
-    <Compile Include="Interfaces\ICyclopsOnEquip.cs" />
+    <Compile Include="Interfaces\ICyclopsOnModulesUpdated.cs" />
     <Compile Include="Interfaces\IVehicleOnToggleOnce.cs" />
     <Compile Include="Interfaces\IVehicleOnEquip.cs" />
     <Compile Include="Interfaces\IVehicleOnToggleRepeating.cs" />
