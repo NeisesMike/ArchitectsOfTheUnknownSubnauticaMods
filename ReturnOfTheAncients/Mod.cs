@@ -53,6 +53,7 @@ namespace RotA
         static ExosuitZapModule exosuitZapModule;
         static ExosuitDashModule exosuitDashModule;
         static SuperDecoy superDecoy;
+        static CyclopsScannerModule cyclopsScannerModule;
 
         static GenericSignalPrefab signal_cragFieldBase;
         static GenericSignalPrefab signal_sparseReefBase;
@@ -312,6 +313,10 @@ namespace RotA
             exosuitDashModule.Patch();
             PrecursorFabricatorService.SubscribeToFabricator(exosuitDashModule.TechType, PrecursorFabricatorTab.UpgradeModules);
             DisplayCaseServices.WhitelistTechType(exosuitDashModule.TechType);
+
+            cyclopsScannerModule = new CyclopsScannerModule();
+            cyclopsScannerModule.Patch();
+            DisplayCaseServices.WhitelistTechType(cyclopsScannerModule.TechType);
         }
 
         static void PatchSignals()

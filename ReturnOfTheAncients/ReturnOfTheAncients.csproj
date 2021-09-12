@@ -212,6 +212,7 @@
     <Compile Include="Mono\Equipment\WarpCannon.cs" />
     <Compile Include="Mono\Equipment\WarpCannonAnimations.cs" />
     <Compile Include="Mono\MiscPDALines.cs" />
+    <Compile Include="Mono\Modules\CyclopsScanner.cs" />
     <Compile Include="Mono\Modules\DashOnKeyPress.cs" />
     <Compile Include="Mono\TrollFaceTracker.cs" />
     <Compile Include="Mono\TrollVoice.cs" />
@@ -284,6 +285,7 @@
     <Compile Include="Prefabs\GargantuanEgg.cs" />
     <Compile Include="Prefabs\GenericWorldPrefab.cs" />
     <Compile Include="Prefabs\Initializers\MiscInitializers.cs" />
+    <Compile Include="Prefabs\Modules\CyclopsScannerModule.cs" />
     <Compile Include="Prefabs\Modules\ExosuitDashModule.cs" />
     <Compile Include="Prefabs\Modules\ExosuitZapModule.cs" />
     <Compile Include="Prefabs\Modules\SeamothElectricalDefenseMK2.cs" />
