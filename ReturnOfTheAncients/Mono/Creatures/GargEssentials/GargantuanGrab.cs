@@ -316,6 +316,25 @@ namespace RotA.Mono.Creatures.GargEssentials
             Invoke(nameof(ReleaseHeld), attackLength);
             MainCameraControl.main.ShakeCamera(7f, attackLength, MainCameraControl.ShakeMode.BuildUp, 1.2f);
             behaviour.timeCanAttackAgain = Time.time + attackLength + 1f;
+
+            var creatureAttackVoice = subRoot.creatureAttackNotification;
+            if (creatureAttackVoice != null)
+            {
+                creatureAttackVoice.timeNextPlay = 0f; //force the line to play
+                creatureAttackVoice.Play();
+            }
+            Invoke(nameof(PlaySystemFailureCyclopsLine), 6f);
+        }
+
+        private void PlaySystemFailureCyclopsLine()
+        {
+            if (heldSubroot == null) return;
+            var systemFailureVoice = heldSubroot.welcomeNotificationEmergency;
+            if (systemFailureVoice != null)
+            {
+                systemFailureVoice.timeNextPlay = 0f; //force the line to play
+                systemFailureVoice.Play();
+            }
         }
 
         private void GrabVehicle(Vehicle vehicle, GrabType vehicleType)
