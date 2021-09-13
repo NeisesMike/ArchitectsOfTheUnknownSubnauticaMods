@@ -44,7 +44,5 @@ namespace RotA.Prefabs.Creatures
         }
 
         public override GargGrabFishMode GrabFishMode => GargGrabFishMode.LeviathansOnlyNoSwallow;
-
-        public override string AttachBoneName => "AttachBone";
     }
 }

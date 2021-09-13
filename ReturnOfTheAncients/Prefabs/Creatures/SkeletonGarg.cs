@@ -1,4 +1,4 @@
-﻿using ECCLibrary;
+using ECCLibrary;
 using UnityEngine;
 
 namespace RotA.Prefabs.Creatures
@@ -49,8 +49,6 @@ namespace RotA.Prefabs.Creatures
         public override AttackLastTargetSettings AttackSettings => new AttackLastTargetSettings(0f, 0f, 0f, 0f, 0f, 0f);
         public override LargeWorldEntity.CellLevel CellLevel => LargeWorldEntity.CellLevel.Far;
         public override EcoTargetType EcoTargetType => EcoTargetType.CuteFish;
-
-        public override string AttachBoneName => "AttachBone";
 
         public override bool CanRoar => false;
     }

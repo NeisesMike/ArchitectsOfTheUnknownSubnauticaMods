@@ -1,4 +1,4 @@
-﻿using ArchitectsLibrary.API;
+using ArchitectsLibrary.API;
 using ECCLibrary;
 using RotA.Mono.Creatures.Baby;
 using RotA.Mono.Creatures.CreatureActions;
@@ -65,8 +65,6 @@ namespace RotA.Prefabs.Creatures
 
         public override string CloseRoarPrefix => "GargBaby";
         public override string DistantRoarPrefix => "GargBaby";
-
-        public override string AttachBoneName => "AttachBone";
 
         public override (float, float) RoarDelayMinMax => (18f, 40f);
 

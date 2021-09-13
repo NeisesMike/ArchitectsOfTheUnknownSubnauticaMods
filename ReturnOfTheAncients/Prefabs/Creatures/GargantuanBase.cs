@@ -12,6 +12,7 @@ namespace RotA.Prefabs.Creatures
         {
         }
 
+        #region ECC implementation 
         public override BehaviourType BehaviourType => BehaviourType.Leviathan;
 
         public override LargeWorldEntity.CellLevel CellLevel => LargeWorldEntity.CellLevel.VeryFar;
@@ -51,6 +52,20 @@ namespace RotA.Prefabs.Creatures
         public override VFXSurfaceTypes SurfaceType => VFXSurfaceTypes.metal;
 
         public override UBERMaterialProperties MaterialSettings => new UBERMaterialProperties(5f, 1f, 2f);
+
+        public virtual void ApplyAggression()
+        {
+            MakeAggressiveTo(80f, 2, EcoTargetType.Shark, 0.2f, 2f);
+            MakeAggressiveTo(60f, 2, EcoTargetType.Whale, 0.23f, 2.3f);
+            MakeAggressiveTo(250f, 7, EcoTargetType.Leviathan, 0.3f, 5f);
+            MakeAggressiveTo(200f, 7, Mod.superDecoyTargetType, 0f, 5f);
+        }
+
+        public override void SetLiveMixinData(ref LiveMixinData liveMixinData)
+        {
+            liveMixinData.maxHealth = 50000f;
+        }
+        #endregion
 
         public override void AddCustomBehaviour(CreatureComponents components)
         {
@@ -154,7 +169,7 @@ namespace RotA.Prefabs.Creatures
             }
             
             GargantuanGrab gargantuanGrab = prefab.EnsureComponent<GargantuanGrab>();
-            gargantuanGrab.attachBoneName = AttachBoneName;
+            gargantuanGrab.attachBoneName = kAttachBoneName;
             gargantuanGrab.vehicleDamagePerSecond = VehicleDamagePerSecond;
             gargantuanGrab.grabFishMode = GrabFishMode;
 
@@ -170,7 +185,7 @@ namespace RotA.Prefabs.Creatures
             mouthAttack.canAttackPlayer = AttackPlayer;
             mouthAttack.biteDamage = BiteDamage;
             mouthAttack.oneShotPlayer = OneShotsPlayer;
-            mouthAttack.attachBoneName = AttachBoneName;
+            mouthAttack.attachBoneName = kAttachBoneName;
             mouthAttack.canPerformCyclopsCinematic = CanPerformCyclopsCinematic;
             mouthAttack.grabFishMode = GrabFishMode;
 
@@ -255,14 +270,7 @@ namespace RotA.Prefabs.Creatures
             components.creature.eyeFOV = EyeFov;
         }
 
-        public virtual void ApplyAggression()
-        {
-            MakeAggressiveTo(80f, 2, EcoTargetType.Shark, 0.2f, 2f);
-            MakeAggressiveTo(60f, 2, EcoTargetType.Whale, 0.23f, 2.3f);
-            MakeAggressiveTo(250f, 7, EcoTargetType.Leviathan, 0.3f, 5f);
-            MakeAggressiveTo(200f, 7, Mod.superDecoyTargetType, 0f, 5f);
-        }
-
+        #region Properties for garg variants
         public virtual bool EnableStealth
         {
             get
@@ -429,14 +437,6 @@ namespace RotA.Prefabs.Creatures
             }
         }
 
-        public virtual string AttachBoneName
-        {
-            get
-            {
-                return "Head.001";
-            }
-        }
-
         public virtual float CloseRoarThreshold
         {
             get
@@ -453,10 +453,7 @@ namespace RotA.Prefabs.Creatures
             }
         }
 
-        public override void SetLiveMixinData(ref LiveMixinData liveMixinData)
-        {
-            liveMixinData.maxHealth = 50000f;
-        }
+        #endregion
 
         void FixRotationMultipliers(TrailManager tm, float frame1, float frame2)
         {
@@ -473,6 +470,8 @@ namespace RotA.Prefabs.Creatures
             tm.rollMultiplier = curve;
             tm.yawMultiplier = curve;
         }
+
+        private const string kAttachBoneName = "AttachBone";
     }
 
     public enum GargGrabFishMode
