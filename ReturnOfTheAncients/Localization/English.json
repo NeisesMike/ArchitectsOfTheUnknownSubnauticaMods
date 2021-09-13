@@ -131,7 +131,7 @@
     "Tooltip_CyclopsDecoyMk2": "Attracts creatures to its location using ionic energy pulses. Can be deployed by hand or by a submarine. Reclaimable once deployed.",
 
     "CyclopsScannerModule": "Cyclops Scanner Module",
-    "Tooltip_CyclopsScannerModule": "An industrial scale vehicle-mounted device which can be used to scan terrain, spacecraft, and large fauna at an extended range.",
+    "Tooltip_CyclopsScannerModule": "An industrial scale vehicle-mounted device which can be used to scan terrain, spacecraft, and large fauna at an extended range. Accessed via conning tower camera.",
 
     // Tools Prompts
 
