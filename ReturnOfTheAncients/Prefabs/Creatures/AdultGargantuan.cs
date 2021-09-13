@@ -1,4 +1,4 @@
-﻿using ArchitectsLibrary.API;
+using ArchitectsLibrary.API;
 using ECCLibrary;
 using RotA.Mono;
 using RotA.Mono.Creatures.GargEssentials;
@@ -48,7 +48,7 @@ namespace RotA.Prefabs.Creatures
 
         public override bool AdvancedCollisions => false;
 
-        public override bool HasEyeTracking => false;
+        public override bool HasEyeTracking => true;
 
         public override void AddCustomBehaviour(CreatureComponents components)
         {

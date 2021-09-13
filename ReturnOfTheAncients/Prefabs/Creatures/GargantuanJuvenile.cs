@@ -1,4 +1,4 @@
-﻿using ArchitectsLibrary.API;
+using ArchitectsLibrary.API;
 using ECCLibrary;
 using RotA.Mono;
 using UnityEngine;
@@ -28,6 +28,8 @@ namespace RotA.Prefabs.Creatures
         public override string GetEncyTitle => LanguageSystem.Get("Ency_GargantuanJuvenile");
         
         public override string GetEncyDesc => LanguageSystem.Get("EncyDesc_GargantuanJuvenile");
+
+        public override bool HasEyeTracking => true;
 
         public GargantuanJuvenile(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
         {
