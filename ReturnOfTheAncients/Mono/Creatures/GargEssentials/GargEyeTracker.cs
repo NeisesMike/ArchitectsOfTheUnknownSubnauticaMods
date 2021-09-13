@@ -5,13 +5,13 @@ namespace RotA.Mono.Creatures.GargEssentials
     class GargEyeTracker : MonoBehaviour
     {
         public Transform upReference;
-        private Transform _target;
         public bool xUp;
         public bool clamp;
         public Vector3 localRotationLimitsMin;
         public Vector3 localRotationLimitsMax;
         public Vector3 localRotationOffset;
 
+        private Transform _target;
         private Quaternion _defaultRotation;
         private Vector3 _defaultLocalDirection;
 
@@ -28,6 +28,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         {
             _defaultRotation = transform.localRotation;
             _defaultLocalDirection = transform.InverseTransformDirection(transform.up);
+            _target = Player.main.transform;
         }
         private void LateUpdate()
         {
