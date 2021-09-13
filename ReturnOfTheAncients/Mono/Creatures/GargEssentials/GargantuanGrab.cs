@@ -323,18 +323,6 @@ namespace RotA.Mono.Creatures.GargEssentials
                 creatureAttackVoice.timeNextPlay = 0f; //force the line to play
                 creatureAttackVoice.Play();
             }
-            Invoke(nameof(PlaySystemFailureCyclopsLine), 6f);
-        }
-
-        private void PlaySystemFailureCyclopsLine()
-        {
-            if (heldSubroot == null) return;
-            var systemFailureVoice = heldSubroot.welcomeNotificationEmergency;
-            if (systemFailureVoice != null)
-            {
-                systemFailureVoice.timeNextPlay = 0f; //force the line to play
-                systemFailureVoice.Play();
-            }
         }
 
         private void GrabVehicle(Vehicle vehicle, GrabType vehicleType)
