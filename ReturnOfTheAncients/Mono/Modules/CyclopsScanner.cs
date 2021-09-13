@@ -39,8 +39,10 @@ namespace RotA.Mono.Modules
             if (_canScan)
             {
                 UpdatePDAScannerTarget(kMaxScanDistance);
+                ErrorMessage.AddMessage("Current target techtype: " + PDAScanner.scanTarget.techType);
                 if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
                 {
+                    ErrorMessage.AddMessage("Button held");
                     PDAScanner.Scan();
                 }
             }
