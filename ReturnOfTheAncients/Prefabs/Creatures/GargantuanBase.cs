@@ -1,4 +1,4 @@
-﻿using ECCLibrary;
+using ECCLibrary;
 using RotA.Mono.Creatures.CreatureActions;
 using RotA.Mono.Creatures.GargEssentials;
 using System.Collections.Generic;
@@ -211,15 +211,38 @@ namespace RotA.Prefabs.Creatures
                 prefab.AddComponent<GargantuanSwimAmbience>();
             }
 
+            #region Eye tracking ugliness
             if (HasEyeTracking)
             {
-                prefab.SearchChild("BLE").AddComponent<GargEyeTracker>();
-                prefab.SearchChild("BRE").AddComponent<GargEyeTracker>();
-                prefab.SearchChild("FLE").AddComponent<GargEyeTracker>();
-                prefab.SearchChild("FRE").AddComponent<GargEyeTracker>();
-                prefab.SearchChild("MLE").AddComponent<GargEyeTracker>();
-                prefab.SearchChild("MRE").AddComponent<GargEyeTracker>();
+                var upperJawTransform = prefab.SearchChild("Upper_Jaw").transform;
+
+                Transform CreateEyeTransform(string name, Vector3 eulers)
+                {
+                    GameObject obj = new GameObject(name);
+                    obj.transform.SetParent(upperJawTransform, false);
+                    obj.transform.localEulerAngles = eulers;
+                    return obj.transform;
+                }
+
+                var genericUp = CreateEyeTransform("EyesUp", Vector3.zero);
+                var freUp = CreateEyeTransform("FREUp", new Vector3(-16.7f, 0f, 0f));
+                var breUp = CreateEyeTransform("BREUp", new Vector3(-24.454f, 19.664f, 0f));
+
+                var ble = prefab.SearchChild("BLE").AddComponent<GargEyeTracker>();
+                ble.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(90f, 90f, 300f));
+                var bre = prefab.SearchChild("BRE").AddComponent<GargEyeTracker>();
+                bre.InitializeValues(breUp, false, true, new Vector3(0f, 0f, 20f), new Vector3(0f, 0f, 120f), new Vector3(-15f, 14f, 0f));
+                var fle = prefab.SearchChild("FLE").AddComponent<GargEyeTracker>();
+                fle.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
+                var fre = prefab.SearchChild("FRE").AddComponent<GargEyeTracker>();
+                fre.InitializeValues(freUp, true, false, Vector3.zero, Vector3.zero);
+                var mle = prefab.SearchChild("MLE").AddComponent<GargEyeTracker>();
+                mle.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
+                var mre = prefab.SearchChild("MRE").AddComponent<GargEyeTracker>();
+                mre.InitializeValues(genericUp, true, false, Vector3.zero, Vector3.zero);
             }
+            #endregion
+
             prefab.SearchChild("BLE").AddComponent<GargEyeFixer>();
             prefab.SearchChild("BRE").AddComponent<GargEyeFixer>();
             prefab.SearchChild("FLE").AddComponent<GargEyeFixer>();

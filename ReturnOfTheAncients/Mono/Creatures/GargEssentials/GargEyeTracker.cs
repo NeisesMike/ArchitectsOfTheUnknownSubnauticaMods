@@ -15,7 +15,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         private Quaternion _defaultRotation;
         private Vector3 _defaultLocalDirection;
 
-        public void InitializeValues(Transform upReference, bool xUp, bool clamp, Vector3 localRotationLimitsMin, Vector3 localRotationLimitsMax, Vector3 localRotationOffset)
+        public void InitializeValues(Transform upReference, bool xUp, bool clamp, Vector3 localRotationLimitsMin, Vector3 localRotationLimitsMax, Vector3 localRotationOffset = default)
         {
             this.upReference = upReference;
             this.xUp = xUp;
