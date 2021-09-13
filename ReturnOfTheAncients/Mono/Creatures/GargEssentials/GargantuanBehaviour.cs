@@ -5,6 +5,8 @@ namespace RotA.Mono.Creatures.GargEssentials
     
     class GargantuanBehaviour : MonoBehaviour, IOnTakeDamage, IOnArchitectElectricityZap
     {
+        public Transform EyeTrackTarget { get; private set; }
+
         internal GameObject CachedBloodPrefab { get; private set; }
         
         internal GargantuanRoar roar;
@@ -13,29 +15,47 @@ namespace RotA.Mono.Creatures.GargEssentials
         internal float bloodDestroyTime;
         internal float timeCanAttackAgain;
         
-        Creature creature;
-        GargantuanGrab grab;
-        GargantuanStealth stealth;
-
-        public Transform EyeTrackTarget { get; private set; }
+        Creature _creature;
+        GargantuanGrab _grab;
+        GargantuanStealth _stealth;
+        private float _timeUpdateEyeTargetAgain;
+        private const float kUpdateEyeTargetInterval = 0.2f;
 
         void Start()
         {
-            grab = GetComponent<GargantuanGrab>();
-            creature = GetComponent<Creature>();
+            _grab = GetComponent<GargantuanGrab>();
+            _creature = GetComponent<Creature>();
             roar = GetComponent<GargantuanRoar>();
             lastTarget = gameObject.GetComponent<LastTarget>();
-            stealth = gameObject.GetComponent<GargantuanStealth>();
+            _stealth = gameObject.GetComponent<GargantuanStealth>();
         }
 
         public bool IsInStealthMode()
         {
-            return stealth != null && stealth.StealthActive;
+            return _stealth != null && _stealth.StealthActive;
         }
 
         public bool CanEat(GameObject target)
         {
             return target.GetComponent<Creature>() || target.GetComponent<Player>() || target.GetComponent<Vehicle>() || target.GetComponent<SubRoot>() || target.GetComponent<CyclopsDecoy>();
+        }
+
+        private void Update()
+        {
+            if (Time.time > _timeUpdateEyeTargetAgain)
+            {
+                EyeTrackTarget = FindEyeTarget();
+                _timeUpdateEyeTargetAgain = Time.time + kUpdateEyeTargetInterval;
+            }
+        }
+
+        private Transform FindEyeTarget()
+        {
+            if (lastTarget.target != null)
+            {
+                return lastTarget.target.transform;
+            }
+            return Player.main.transform;
         }
 
         public bool GetBloodEffectFromCreature(GameObject creature, float startSizeScale, float lifetimeScale)
@@ -101,22 +121,17 @@ namespace RotA.Mono.Creatures.GargEssentials
 
         public void OnDamagedByArchElectricity()
         {
-            if (grab.HeldVehicle is not null)
+            if (_grab.HeldVehicle is not null)
             {
-                grab.ReleaseHeld();
+                _grab.ReleaseHeld();
             }
             else
             {
-                creature.Scared.Value = 1f;
-                creature.Aggression.Value = 0f;
+                _creature.Scared.Value = 1f;
+                _creature.Aggression.Value = 0f;
                 timeCanAttackAgain = Time.time + 5f;
             }
             if (lastTarget != null) lastTarget.target = null;
-        }
-
-        void Update()
-        {
-
         }
     }
 }
