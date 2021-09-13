@@ -1,4 +1,5 @@
 using ArchitectsLibrary.Utility;
+using RotA.Mono.Creatures.GargEssentials;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace RotA.Mono.Modules
         private VFXOverlayMaterial _scanFX;
         private Material _scanMaterialCircuitFX;
         private Material _scanMaterialOrganicFX;
+        private Material _scanMaterialGargFX;
 
         private bool _canScan;
 
@@ -42,6 +44,11 @@ namespace RotA.Mono.Modules
                 _scanMaterialOrganicFX.hideFlags = HideFlags.HideAndDontSave;
                 _scanMaterialOrganicFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
                 _scanMaterialOrganicFX.SetColor(ShaderPropertyID._Color, scannerTool.scanOrganicColor);
+
+                _scanMaterialGargFX = new Material(shader);
+                _scanMaterialGargFX.hideFlags = HideFlags.HideAndDontSave;
+                _scanMaterialGargFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
+                _scanMaterialGargFX.SetColor(ShaderPropertyID._Color, new Color(0.63f, 0f, 1f));
             }
         }
 
@@ -101,6 +108,11 @@ namespace RotA.Mono.Modules
                     {
                         StopScanFX();
                         _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+                        if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
+                        {
+                            _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
+                            return;
+                        }
                         if (scanTarget.gameObject.GetComponent<Creature>() != null)
                         {
                             _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
@@ -113,6 +125,11 @@ namespace RotA.Mono.Modules
                 else
                 {
                     _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+                    if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
+                    {
+                        _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
+                        return;
+                    }
                     if (scanTarget.gameObject.GetComponent<Creature>() != null)
                     {
                         _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
