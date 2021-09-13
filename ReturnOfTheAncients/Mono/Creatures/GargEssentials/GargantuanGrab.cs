@@ -70,6 +70,11 @@ namespace RotA.Mono.Creatures.GargEssentials
             if (CurrentHeldObject == null)
                 return;
 
+            if (heldSubroot != null && heldSubroot.rb != null)
+            {
+                heldSubroot.rb.isKinematic = true;
+            }
+
             Transform held = CurrentHeldObject.transform;
             Transform holdPoint = GetHoldPoint();
             float num = Mathf.Clamp01(Time.time - timeVehicleGrabbed);
@@ -81,7 +86,7 @@ namespace RotA.Mono.Creatures.GargEssentials
                 }
                 else if (IsHoldingLargeSub())
                 {
-                    held.transform.position = holdPoint.position + (holdPoint.forward * -15f);
+                    held.transform.position = holdPoint.position + (holdPoint.forward * -20f);
                 }
                 else
                 {
@@ -90,8 +95,7 @@ namespace RotA.Mono.Creatures.GargEssentials
 
                 if (IsHoldingLargeSub())
                 {
-                    held.transform.rotation =
-                        behaviour.InverseRotation(holdPoint.transform.rotation); // cyclops faces backwards for whatever reason so we need to invert the rotation
+                    held.transform.forward = -holdPoint.transform.forward; // cyclops faces backwards for whatever reason so we need to invert the rotation
                 }
                 else if (IsHoldingPickupableFish())
                 {
@@ -126,17 +130,20 @@ namespace RotA.Mono.Creatures.GargEssentials
 
             if (IsGargJuvenile() && IsHoldingFish())
             {
-                held.transform.position = (behaviour.FixJuvenileFishHoldPosition(holdPoint, holdPoint.position) - this.vehicleInitialPosition) * num + this.vehicleInitialPosition;
+                held.transform.position = (behaviour.FixJuvenileFishHoldPosition(holdPoint, holdPoint.position) - vehicleInitialPosition) * num + vehicleInitialPosition;
+            }
+            else if (IsHoldingLargeSub())
+            {
+                held.transform.position = ((holdPoint.position + (holdPoint.forward * -20f)) - vehicleInitialPosition) * num + vehicleInitialPosition;
             }
             else
             {
-                held.transform.position = (holdPoint.position - this.vehicleInitialPosition) * num + this.vehicleInitialPosition;
+                held.transform.position = (holdPoint.position - this.vehicleInitialPosition) * num + vehicleInitialPosition;
             }
 
             if (IsHoldingLargeSub())
             {
-                held.transform.rotation = Quaternion.Lerp(this.vehicleInitialRotation,
-                    behaviour.InverseRotation(holdPoint.rotation), num); // cyclops faces backwards for whatever reason so we need to invert the rotation
+                held.transform.forward = -holdPoint.transform.forward; // cyclops faces backwards for whatever reason so we need to invert the rotation
             }
             else if (IsHoldingPickupableFish())
             {
