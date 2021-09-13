@@ -39,10 +39,14 @@ namespace RotA.Mono.Modules
             if (_canScan)
             {
                 UpdatePDAScannerTarget(kMaxScanDistance);
+                if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
+                {
+                    PDAScanner.Scan();
+                }
             }
         }
 
-        // uwe code from PDAScanner class, not mine
+        // edited uwe code from PDAScanner class, not mine
         private void UpdatePDAScannerTarget(float distance)
         {
             PDAScanner.ScanTarget newScanTarget = default;
