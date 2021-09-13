@@ -1,4 +1,5 @@
 using ArchitectsLibrary.Utility;
+using System.Collections;
 using UnityEngine;
 
 namespace RotA.Mono.Modules
@@ -8,15 +9,40 @@ namespace RotA.Mono.Modules
         private SubRoot _cyclops;
         private CyclopsExternalCams _cyclopsExternalCams;
         private bool _showedInstructions;
+        private GameObject _scanBeam;
+        private VFXOverlayMaterial _scanFX;
+        private Material _scanMaterialCircuitFX;
+        private Material _scanMaterialOrganicFX;
 
         private bool _canScan;
 
         private const float kMaxScanDistance = 200f;
+        private const int kCyclopsScannerPower = 10;
 
-        void Start()
+        IEnumerator Start()
         {
             _cyclops = GetComponent<SubRoot>();
             _cyclopsExternalCams = GetComponentInChildren<CyclopsExternalCams>();
+            SetFXActive(false);
+
+            var task = CraftData.GetPrefabForTechTypeAsync(TechType.Scanner);
+            yield return task;
+            var scannerPrefab = task.GetResult();
+            var scannerTool = scannerPrefab.GetComponent<ScannerTool>();
+            
+            Shader shader = Shader.Find("FX/Scanning");
+            if (shader != null)
+            {
+                _scanMaterialCircuitFX = new Material(shader);
+                _scanMaterialCircuitFX.hideFlags = HideFlags.HideAndDontSave;
+                _scanMaterialCircuitFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanCircuitTex);
+                _scanMaterialCircuitFX.SetColor(ShaderPropertyID._Color, scannerTool.scanCircuitColor);
+
+                _scanMaterialOrganicFX = new Material(shader);
+                _scanMaterialOrganicFX.hideFlags = HideFlags.HideAndDontSave;
+                _scanMaterialOrganicFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
+                _scanMaterialOrganicFX.SetColor(ShaderPropertyID._Color, scannerTool.scanOrganicColor);
+            }
         }
 
         void Update()
@@ -36,15 +62,72 @@ namespace RotA.Mono.Modules
                 _canScan = false;
             }
 
+            bool fxActive = false;
             if (_canScan)
             {
                 UpdatePDAScannerTarget(kMaxScanDistance);
-                ErrorMessage.AddMessage("Current target techtype: " + PDAScanner.scanTarget.techType);
                 if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
                 {
-                    ErrorMessage.AddMessage("Button held");
-                    PDAScanner.Scan();
+                    for (int i = 0; i < kCyclopsScannerPower; i++)
+                    {
+                        PDAScanner.Scan();
+                    }
+                    fxActive = true;
                 }
+            }
+            SetFXActive(fxActive);
+        }
+
+        private void SetFXActive(bool state)
+        {
+            //_scanBeam.gameObject.SetActive(state);
+
+            if (state && PDAScanner.scanTarget.isValid)
+            {
+                PlayScanFX();
+                return;
+            }
+            StopScanFX();
+        }
+
+        private void PlayScanFX()
+        {
+            PDAScanner.ScanTarget scanTarget = PDAScanner.scanTarget;
+            if (scanTarget.isValid)
+            {
+                if (_scanFX != null)
+                {
+                    if (_scanFX.gameObject != scanTarget.gameObject)
+                    {
+                        StopScanFX();
+                        _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+                        if (scanTarget.gameObject.GetComponent<Creature>() != null)
+                        {
+                            _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
+                            return;
+                        }
+                        _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
+                        return;
+                    }
+                }
+                else
+                {
+                    _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+                    if (scanTarget.gameObject.GetComponent<Creature>() != null)
+                    {
+                        _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
+                        return;
+                    }
+                    _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
+                }
+            }
+        }
+
+        private void StopScanFX()
+        {
+            if (_scanFX != null)
+            {
+                _scanFX.RemoveOverlay();
             }
         }
 
@@ -84,6 +167,11 @@ namespace RotA.Mono.Modules
             }
             result = null;
             return false;
+        }
+
+        void OnDisable()
+        {
+            SetFXActive(false);
         }
     }
 }
