@@ -86,7 +86,7 @@ namespace RotA.Mono.Creatures.GargEssentials
                 }
                 else if (IsHoldingLargeSub())
                 {
-                    held.transform.position = holdPoint.position + (holdPoint.forward * -20f);
+                    held.transform.position = holdPoint.position + (holdPoint.forward * -25f);
                 }
                 else
                 {
@@ -134,7 +134,7 @@ namespace RotA.Mono.Creatures.GargEssentials
             }
             else if (IsHoldingLargeSub())
             {
-                held.transform.position = ((holdPoint.position + (holdPoint.forward * -20f)) - vehicleInitialPosition) * num + vehicleInitialPosition;
+                held.transform.position = ((holdPoint.position + (holdPoint.forward * -25f)) - vehicleInitialPosition) * num + vehicleInitialPosition;
             }
             else
             {
@@ -319,9 +319,9 @@ namespace RotA.Mono.Creatures.GargEssentials
             ToggleSubrootColliders(false);
             subRoot.rigidbody.isKinematic = true;
             InvokeRepeating(nameof(DamageVehicle), 1f, 1f);
-            float attackLength = 12f;
+            float attackLength = 11f;
             Invoke(nameof(ReleaseHeld), attackLength);
-            MainCameraControl.main.ShakeCamera(7f, attackLength, MainCameraControl.ShakeMode.BuildUp, 1.2f);
+            MainCameraControl.main.ShakeCamera(5f, attackLength, MainCameraControl.ShakeMode.BuildUp, 1.2f);
             behaviour.timeCanAttackAgain = Time.time + attackLength + 1f;
 
             var creatureAttackVoice = subRoot.creatureAttackNotification;
