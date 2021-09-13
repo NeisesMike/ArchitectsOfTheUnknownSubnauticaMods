@@ -1,35 +1,57 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace RotA.Mono.Creatures.GargEssentials
 {
     class GargEyeTracker : MonoBehaviour
     {
-        Quaternion defaultLocalRotation;
+        public Transform upReference;
+        public Transform target;
+        public bool xUp;
+        public bool clamp;
+        public Vector3 localRotationLimitsMin;
+        public Vector3 localRotationLimitsMax;
+        public Vector3 localRotationOffset;
 
-        void Start()
+        private Quaternion _defaultRotation;
+        private Vector3 _defaultLocalDirection;
+
+        private void Start()
         {
-            defaultLocalRotation = transform.localRotation;
+            _defaultRotation = transform.localRotation;
+            _defaultLocalDirection = transform.InverseTransformDirection(transform.up);
         }
-
-        void LateUpdate()
+        private void LateUpdate()
         {
-            Transform target = GetTarget();
-            if (target)
+            Vector3 lookDir = (target.transform.position - transform.position).normalized;
+            Quaternion rotation = xUp ? XLookRotation(upReference.forward, lookDir) : Quaternion.LookRotation(upReference.forward, lookDir);
+
+            bool shouldLookStraight = Vector3.Dot(transform.TransformDirection(_defaultLocalDirection), lookDir) < 0.2f;
+            if (shouldLookStraight)
             {
-                Vector3 direction = (target.transform.position - transform.position).normalized;
-                transform.rotation = Quaternion.LookRotation(-transform.up, direction);
+                transform.localRotation = _defaultRotation;
             }
             else
             {
-                transform.localRotation = defaultLocalRotation;
+                transform.rotation = rotation;
+                Vector3 eulerAngles = transform.localEulerAngles;
+                if (clamp)
+                {
+                    eulerAngles = new Vector3(Mathf.Clamp(eulerAngles.x, localRotationLimitsMin.x, localRotationLimitsMax.x), Mathf.Clamp(eulerAngles.y, localRotationLimitsMin.y, localRotationLimitsMax.y), Mathf.Clamp(eulerAngles.z, localRotationLimitsMin.z, localRotationLimitsMax.z));
+                }
+                eulerAngles += localRotationOffset;
+                transform.localEulerAngles = eulerAngles;
             }
-
-            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0f);
         }
 
-        Transform GetTarget()
+        Quaternion XLookRotation(Vector3 right, Vector3 up = default)
         {
-            return MainCamera.camera.transform;
+            if (up == default)
+                up = Vector3.up;
+
+            Quaternion rightToForward = Quaternion.Euler(0f, -90f, 0f);
+            Quaternion forwardToTarget = Quaternion.LookRotation(right, up);
+
+            return forwardToTarget * rightToForward;
         }
     }
 }
