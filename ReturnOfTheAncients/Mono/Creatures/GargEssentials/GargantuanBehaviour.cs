@@ -55,7 +55,7 @@ namespace RotA.Mono.Creatures.GargEssentials
             {
                 return lastTarget.target.transform;
             }
-            return Player.main.transform;
+            return MainCameraControl.main.transform;
         }
 
         public bool GetBloodEffectFromCreature(GameObject creature, float startSizeScale, float lifetimeScale)
