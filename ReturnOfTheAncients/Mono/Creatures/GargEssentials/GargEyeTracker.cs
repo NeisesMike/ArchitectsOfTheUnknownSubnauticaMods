@@ -4,25 +4,25 @@ namespace RotA.Mono.Creatures.GargEssentials
 {
     class GargEyeTracker : MonoBehaviour
     {
-        private Transform _upReference;
-        private bool _xUp;
-        private bool _clamp;
-        private Vector3 _localRotationLimitsMin;
-        private Vector3 _localRotationLimitsMax;
-        private Vector3 _localRotationOffset;
-        private GargantuanBehaviour _garg;
+        public Transform upReference;
+        public bool xUp;
+        public bool clamp;
+        public Vector3 localRotationLimitsMin;
+        public Vector3 localRotationLimitsMax;
+        public Vector3 localRotationOffset;
+        public GargantuanBehaviour garg;
         private Quaternion _defaultRotation;
         private Vector3 _defaultLocalDirection;
 
         public void InitializeValues(GargantuanBehaviour garg, Transform upReference, bool xUp, bool clamp, Vector3 localRotationLimitsMin, Vector3 localRotationLimitsMax, Vector3 localRotationOffset = default)
         {
-            _garg = garg;
-            _upReference = upReference;
-            _xUp = xUp;
-            _clamp = clamp;
-            _localRotationLimitsMin = localRotationLimitsMin;
-            _localRotationLimitsMax = localRotationLimitsMax;
-            _localRotationOffset = localRotationOffset;
+            this.garg = garg;
+            this.upReference = upReference;
+            this.xUp = xUp;
+            this.clamp = clamp;
+            this.localRotationLimitsMin = localRotationLimitsMin;
+            this.localRotationLimitsMax = localRotationLimitsMax;
+            this.localRotationOffset = localRotationOffset;
         }
         private void Start()
         {
@@ -31,13 +31,13 @@ namespace RotA.Mono.Creatures.GargEssentials
         }
         private void LateUpdate()
         {
-            if (_garg.EyeTrackTarget == null)
+            if (garg.EyeTrackTarget == null)
             {
                 transform.localRotation = _defaultRotation;
                 return;
             }
-            Vector3 lookDir = (_garg.EyeTrackTarget.transform.position - transform.position).normalized;
-            Quaternion rotation = _xUp ? XLookRotation(_upReference.forward, lookDir) : Quaternion.LookRotation(_upReference.forward, lookDir);
+            Vector3 lookDir = (garg.EyeTrackTarget.transform.position - transform.position).normalized;
+            Quaternion rotation = xUp ? XLookRotation(upReference.forward, lookDir) : Quaternion.LookRotation(upReference.forward, lookDir);
 
             bool shouldLookStraight = Vector3.Dot(transform.TransformDirection(_defaultLocalDirection), lookDir) < 0.2f;
             if (shouldLookStraight)
@@ -48,11 +48,11 @@ namespace RotA.Mono.Creatures.GargEssentials
             {
                 transform.rotation = rotation;
                 Vector3 eulerAngles = transform.localEulerAngles;
-                if (_clamp)
+                if (clamp)
                 {
-                    eulerAngles = new Vector3(Mathf.Clamp(eulerAngles.x, _localRotationLimitsMin.x, _localRotationLimitsMax.x), Mathf.Clamp(eulerAngles.y, _localRotationLimitsMin.y, _localRotationLimitsMax.y), Mathf.Clamp(eulerAngles.z, _localRotationLimitsMin.z, _localRotationLimitsMax.z));
+                    eulerAngles = new Vector3(Mathf.Clamp(eulerAngles.x, localRotationLimitsMin.x, localRotationLimitsMax.x), Mathf.Clamp(eulerAngles.y, localRotationLimitsMin.y, localRotationLimitsMax.y), Mathf.Clamp(eulerAngles.z, localRotationLimitsMin.z, localRotationLimitsMax.z));
                 }
-                eulerAngles += _localRotationOffset;
+                eulerAngles += localRotationOffset;
                 transform.localEulerAngles = eulerAngles;
             }
         }
