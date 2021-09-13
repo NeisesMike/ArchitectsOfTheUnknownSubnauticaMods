@@ -5,7 +5,7 @@ namespace RotA.Mono.Creatures.GargEssentials
     class GargEyeTracker : MonoBehaviour
     {
         public Transform upReference;
-        public Transform target;
+        private Transform _target;
         public bool xUp;
         public bool clamp;
         public Vector3 localRotationLimitsMin;
@@ -15,6 +15,15 @@ namespace RotA.Mono.Creatures.GargEssentials
         private Quaternion _defaultRotation;
         private Vector3 _defaultLocalDirection;
 
+        public void InitializeValues(Transform upReference, bool xUp, bool clamp, Vector3 localRotationLimitsMin, Vector3 localRotationLimitsMax, Vector3 localRotationOffset)
+        {
+            this.upReference = upReference;
+            this.xUp = xUp;
+            this.clamp = clamp;
+            this.localRotationLimitsMin = localRotationLimitsMin;
+            this.localRotationLimitsMax = localRotationLimitsMax;
+            this.localRotationOffset = localRotationOffset;
+        }
         private void Start()
         {
             _defaultRotation = transform.localRotation;
@@ -22,7 +31,12 @@ namespace RotA.Mono.Creatures.GargEssentials
         }
         private void LateUpdate()
         {
-            Vector3 lookDir = (target.transform.position - transform.position).normalized;
+            if (_target == null)
+            {
+                transform.localRotation = _defaultRotation;
+                return;
+            }
+            Vector3 lookDir = (_target.transform.position - transform.position).normalized;
             Quaternion rotation = xUp ? XLookRotation(upReference.forward, lookDir) : Quaternion.LookRotation(upReference.forward, lookDir);
 
             bool shouldLookStraight = Vector3.Dot(transform.TransformDirection(_defaultLocalDirection), lookDir) < 0.2f;
