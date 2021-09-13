@@ -244,17 +244,17 @@ namespace RotA.Prefabs.Creatures
                 var breUp = CreateEyeTransform("BREUp", new Vector3(-24.454f, 19.664f, 0f));
 
                 var ble = prefab.SearchChild("BLE").AddComponent<GargEyeTracker>();
-                ble.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(90f, 90f, 300f));
+                ble.InitializeValues(gargantuanBehaviour, genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(90f, 90f, 300f));
                 var bre = prefab.SearchChild("BRE").AddComponent<GargEyeTracker>();
-                bre.InitializeValues(breUp, false, true, new Vector3(0f, 0f, 20f), new Vector3(0f, 0f, 120f), new Vector3(-15f, 14f, 0f));
+                bre.InitializeValues(gargantuanBehaviour, breUp, false, true, new Vector3(0f, 0f, 20f), new Vector3(0f, 0f, 120f), new Vector3(-15f, 14f, 0f));
                 var fle = prefab.SearchChild("FLE").AddComponent<GargEyeTracker>();
-                fle.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
+                fle.InitializeValues(gargantuanBehaviour, genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
                 var fre = prefab.SearchChild("FRE").AddComponent<GargEyeTracker>();
-                fre.InitializeValues(freUp, true, false, Vector3.zero, Vector3.zero);
+                fre.InitializeValues(gargantuanBehaviour, freUp, true, false, Vector3.zero, Vector3.zero);
                 var mle = prefab.SearchChild("MLE").AddComponent<GargEyeTracker>();
-                mle.InitializeValues(genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
+                mle.InitializeValues(gargantuanBehaviour, genericUp, false, true, new Vector3(0f, 0f, 200f), new Vector3(0f, 0f, 300f));
                 var mre = prefab.SearchChild("MRE").AddComponent<GargEyeTracker>();
-                mre.InitializeValues(genericUp, true, false, Vector3.zero, Vector3.zero);
+                mre.InitializeValues(gargantuanBehaviour, genericUp, true, false, Vector3.zero, Vector3.zero);
             }
             #endregion
 

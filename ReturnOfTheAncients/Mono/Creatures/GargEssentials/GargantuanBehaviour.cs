@@ -1,4 +1,4 @@
-﻿namespace RotA.Mono.Creatures.GargEssentials
+namespace RotA.Mono.Creatures.GargEssentials
 {
     using Modules;
     using UnityEngine;
@@ -16,6 +16,8 @@
         Creature creature;
         GargantuanGrab grab;
         GargantuanStealth stealth;
+
+        public Transform EyeTrackTarget { get; private set; }
 
         void Start()
         {
@@ -110,6 +112,11 @@
                 timeCanAttackAgain = Time.time + 5f;
             }
             if (lastTarget != null) lastTarget.target = null;
+        }
+
+        void Update()
+        {
+
         }
     }
 }

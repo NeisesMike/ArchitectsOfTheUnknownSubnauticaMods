@@ -16,28 +16,27 @@ namespace RotA.Mono.Creatures.GargEssentials
 
         public void InitializeValues(GargantuanBehaviour garg, Transform upReference, bool xUp, bool clamp, Vector3 localRotationLimitsMin, Vector3 localRotationLimitsMax, Vector3 localRotationOffset = default)
         {
-            this._garg = garg;
-            this._upReference = upReference;
-            this._xUp = xUp;
-            this._clamp = clamp;
-            this._localRotationLimitsMin = localRotationLimitsMin;
-            this._localRotationLimitsMax = localRotationLimitsMax;
-            this._localRotationOffset = localRotationOffset;
+            _garg = garg;
+            _upReference = upReference;
+            _xUp = xUp;
+            _clamp = clamp;
+            _localRotationLimitsMin = localRotationLimitsMin;
+            _localRotationLimitsMax = localRotationLimitsMax;
+            _localRotationOffset = localRotationOffset;
         }
         private void Start()
         {
             _defaultRotation = transform.localRotation;
             _defaultLocalDirection = transform.InverseTransformDirection(transform.up);
-            _target = Player.main.transform;
         }
         private void LateUpdate()
         {
-            if (_target == null)
+            if (_garg.EyeTrackTarget == null)
             {
                 transform.localRotation = _defaultRotation;
                 return;
             }
-            Vector3 lookDir = (_target.transform.position - transform.position).normalized;
+            Vector3 lookDir = (_garg.EyeTrackTarget.transform.position - transform.position).normalized;
             Quaternion rotation = _xUp ? XLookRotation(_upReference.forward, lookDir) : Quaternion.LookRotation(_upReference.forward, lookDir);
 
             bool shouldLookStraight = Vector3.Dot(transform.TransformDirection(_defaultLocalDirection), lookDir) < 0.2f;
