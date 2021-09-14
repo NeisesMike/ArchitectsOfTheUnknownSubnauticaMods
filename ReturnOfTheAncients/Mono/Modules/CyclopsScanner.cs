@@ -74,8 +74,8 @@ namespace RotA.Mono.Modules
             {
                 hideFlags = HideFlags.HideAndDontSave
             };
-            _scanMaterialGargFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanCircuitTex);
-            _scanMaterialGargFX.SetColor(ShaderPropertyID._Color, new Color(0.54f, 1f, 0.54f));
+            _scanMaterialPrecursorFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanCircuitTex);
+            _scanMaterialPrecursorFX.SetColor(ShaderPropertyID._Color, new Color(0.54f, 1f, 0.54f));
         }
 
         private void Update()
