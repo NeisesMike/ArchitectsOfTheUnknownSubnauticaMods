@@ -23,7 +23,7 @@ namespace RotA.Mono.Modules
         private const float kMaxScanDistance = 200f;
         private const int kCyclopsScannerPower = 10;
 
-        IEnumerator Start()
+        private IEnumerator Start()
         {
             _cyclops = GetComponent<SubRoot>();
             _cyclopsExternalCams = GetComponentInChildren<CyclopsExternalCams>();
@@ -89,7 +89,7 @@ namespace RotA.Mono.Modules
             bool fxActive = false;
             if (_canScan)
             {
-                UpdatePDAScannerTarget(kMaxScanDistance);
+                UpdateScanTarget(kMaxScanDistance);
                 if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
                 {
                     for (var i = 0; i < kCyclopsScannerPower; i++)
@@ -108,7 +108,7 @@ namespace RotA.Mono.Modules
 
             if (active && PDAScanner.scanTarget.isValid)
             {
-                PlayScanFX();
+                PlayOverlayScanFX();
                 if (!_scanSound.playing)
                 {
                     _scanSound.Play();
@@ -119,7 +119,7 @@ namespace RotA.Mono.Modules
             _scanSound.Stop();
         }
 
-        private void PlayScanFX()
+        private void PlayOverlayScanFX()
         {
             var scanTarget = PDAScanner.scanTarget;
             if (!scanTarget.isValid) return;
@@ -170,25 +170,23 @@ namespace RotA.Mono.Modules
         }
 
         // edited uwe code from PDAScanner class, not mine
-        private void UpdatePDAScannerTarget(float distance)
+        private void UpdateScanTarget(float distance)
         {
             PDAScanner.ScanTarget newScanTarget = default;
             newScanTarget.Invalidate();
             GetTarget(distance, out var candidate);
             newScanTarget.Initialize(candidate);
-            if (PDAScanner.scanTarget.techType != newScanTarget.techType || PDAScanner.scanTarget.gameObject != newScanTarget.gameObject || PDAScanner.scanTarget.uid != newScanTarget.uid)
+            
+            if (PDAScanner.scanTarget.techType == newScanTarget.techType &&
+                PDAScanner.scanTarget.gameObject == newScanTarget.gameObject &&
+                PDAScanner.scanTarget.uid == newScanTarget.uid) return;
+
+            if (newScanTarget.hasUID && PDAScanner.cachedProgress.TryGetValue(newScanTarget.uid, out var progress))
             {
-                if (PDAScanner.scanTarget.isPlayer && PDAScanner.scanTarget.hasUID && PDAScanner.cachedProgress.ContainsKey(PDAScanner.scanTarget.uid))
-                {
-                    PDAScanner.cachedProgress[PDAScanner.scanTarget.uid] = 0f;
-                }
-                float progress;
-                if (newScanTarget.hasUID && PDAScanner.cachedProgress.TryGetValue(newScanTarget.uid, out progress))
-                {
-                    newScanTarget.progress = progress;
-                }
-                PDAScanner.scanTarget = newScanTarget;
+                newScanTarget.progress = progress;
             }
+            
+            PDAScanner.scanTarget = newScanTarget;
         }
 
         private bool GetTarget(float maxDistance, out GameObject result)
@@ -196,8 +194,7 @@ namespace RotA.Mono.Modules
             var cameraTransform = Camera.current.transform;
             var position = cameraTransform.position;
             var forward = cameraTransform.forward;
-            Ray ray = new Ray(position, forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, -1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(position, forward, out var hit, maxDistance, -1, QueryTriggerInteraction.Ignore))
             {
                 result = hit.collider.gameObject;
                 return true;
