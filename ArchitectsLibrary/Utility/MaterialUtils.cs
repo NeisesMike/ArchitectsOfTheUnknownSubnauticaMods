@@ -208,7 +208,7 @@ namespace ArchitectsLibrary.Utility
             if(request.TryGetPrefab(out GameObject glassPanel))
             {
                 PrecursorGlassMaterial = new Material(glassPanel.GetComponentInChildren<MeshRenderer>().material);
-                PrecursorGlassMaterial.SetColor("_Color", new Color(0.3f, 0.3f, 0.3f, 0.4f));
+                PrecursorGlassMaterial.SetColor("_Color", new Color(1f, 1f, 1f, 0.7f));
                 PrecursorGlassMaterial.SetFloat("_SpecInt", 1f);
             }
         }
