@@ -86,11 +86,12 @@ namespace RotA.Mono.Modules
                 _canScan = false;
             }
 
-            PDAScanner.Result scanResult = PDAScanner.Result.None;
+            bool scanning = GameInput.GetButtonHeld(GameInput.Button.AltTool);
+            var scanResult = PDAScanner.Result.None;
             if (_canScan)
             {
                 UpdateScanTarget(kMaxScanDistance);
-                if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
+                if (scanning)
                 {
                     for (var i = 0; i < kCyclopsScannerPower; i++)
                     {
@@ -99,6 +100,20 @@ namespace RotA.Mono.Modules
                 }
             }
             SetFXActive(scanResult == PDAScanner.Result.Scan);
+            SetSfxActive(scanning);
+        }
+
+        private void SetSfxActive(bool active)
+        {
+            if (active)
+            {
+                if (!_scanSound.playing) _scanSound.Play();
+            }
+            else
+            {
+                _scanSound.Stop();
+            }
+
         }
 
         private void SetFXActive(bool active)
@@ -108,14 +123,9 @@ namespace RotA.Mono.Modules
             if (active && PDAScanner.scanTarget.isValid)
             {
                 PlayOverlayScanFX();
-                if (!_scanSound.playing)
-                {
-                    _scanSound.Play();
-                }
                 return;
             }
             StopScanFX();
-            _scanSound.Stop();
         }
 
         private void PlayOverlayScanFX()
