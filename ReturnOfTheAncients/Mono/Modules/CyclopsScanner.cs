@@ -28,13 +28,13 @@ namespace RotA.Mono.Modules
             _cyclops = GetComponent<SubRoot>();
             _cyclopsExternalCams = GetComponentInChildren<CyclopsExternalCams>();
 
-            GameObject scanLoopSFXObj = gameObject.transform.Find("ScanLoopSFX")?.gameObject;
-            if (scanLoopSFXObj)
+            var scanLoopObj = gameObject.transform.Find("ScanLoopSFX")?.gameObject;
+            if (scanLoopObj == null)
             {
-                GameObject scanLoopSFX = new GameObject("ScanLoopSFX");
-                scanLoopSFX.transform.SetParent(transform, false);
+                scanLoopObj = new GameObject("ScanLoopSFX");
+                scanLoopObj.transform.SetParent(transform, false);
             }
-            _scanSound = scanLoopSFXObj.EnsureComponent<FMOD_CustomLoopingEmitter>();
+            _scanSound = scanLoopObj.EnsureComponent<FMOD_CustomLoopingEmitter>();
             _scanSound.SetAsset(SNAudioEvents.GetFmodAsset(SNAudioEvents.Paths.ScannerScanningLoop));
 
             SetFXActive(false);
