@@ -147,7 +147,7 @@ namespace RotA
 
             voidBaseModel = new VoidBaseModel("VoidBaseModel", LanguageSystem.Get("VoidBaseModel"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("VoidBase_Prefab"), new UBERMaterialProperties(6f, 15f, 1f), LargeWorldEntity.CellLevel.VeryFar);
             voidBaseModel.Patch();
-            MakeObjectScannable(voidBaseModel.TechType, ency_voidBaseModel, 6f);
+            MakeObjectScannable(voidBaseModel.TechType, ency_voidBaseModel, 60f);
 
             guardianTailfinModel = new GenericWorldPrefab("GuardianTailfin", LanguageSystem.Get("GuardianTailfin"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("GuardianTailfin_Prefab"), new UBERMaterialProperties(7f, 1f, 1f), LargeWorldEntity.CellLevel.Near);
             guardianTailfinModel.Patch();
