@@ -10,7 +10,7 @@ namespace RotA.Prefabs.AlienBase
 {
     public class OmegaCubeFabricator : Spawnable
     {
-        GameObject _processedPrefab;
+        private GameObject _processedPrefab;
         
         public OmegaCubeFabricator() : base("OmegaCubeFabricator", LanguageSystem.Get("OmegaCubeFabricator"), LanguageSystem.Default)
         {
@@ -83,18 +83,19 @@ namespace RotA.Prefabs.AlienBase
             return prefab;
         }
 
-        GameObject CreateNewElecArcPrefab(GameObject originalPrefab)
+        private GameObject CreateNewElecArcPrefab(GameObject originalPrefab)
         {
-            GameObject prefab = GameObject.Instantiate(originalPrefab);
+            var prefab = Object.Instantiate(originalPrefab);
             prefab.name = "OmegaElecArc";
             prefab.GetComponent<VFXElectricArcs>().Start();
             prefab.SetActive(false);
             prefab.SearchChild("ElecArcTarget").transform.localPosition = new Vector3(0f, -11f, 0f);
             return prefab;
         }
-        GameObject CreateNewBeamPrefab(GameObject originalPrefab)
+
+        private GameObject CreateNewBeamPrefab(GameObject originalPrefab)
         {
-            GameObject prefab = GameObject.Instantiate(originalPrefab);
+            var prefab = Object.Instantiate(originalPrefab);
             prefab.name = "OmegaBeam";
             prefab.SetActive(false);
             foreach (ParticleSystem ps in originalPrefab.GetComponentsInChildren<ParticleSystem>())
@@ -111,7 +112,7 @@ namespace RotA.Prefabs.AlienBase
             return prefab;
         }
 
-        private void DestroyPrefabComponents(GameObject obj)
+        private static void DestroyPrefabComponents(GameObject obj)
         {
             obj.TryDestroyChildComponents<LargeWorldEntity>();
             obj.TryDestroyChildComponents<PrefabIdentifier>();
