@@ -86,7 +86,7 @@ namespace RotA.Mono.Modules
                 _canScan = false;
             }
 
-            bool fxActive = false;
+            PDAScanner.Result scanResult = PDAScanner.Result.None;
             if (_canScan)
             {
                 UpdateScanTarget(kMaxScanDistance);
@@ -94,12 +94,11 @@ namespace RotA.Mono.Modules
                 {
                     for (var i = 0; i < kCyclopsScannerPower; i++)
                     {
-                        PDAScanner.Scan();
+                        scanResult = PDAScanner.Scan();
                     }
-                    fxActive = true;
                 }
             }
-            SetFXActive(fxActive);
+            SetFXActive(scanResult == PDAScanner.Result.Scan);
         }
 
         private void SetFXActive(bool active)
