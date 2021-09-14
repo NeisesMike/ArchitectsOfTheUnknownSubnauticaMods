@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ArchitectsLibrary.API;
 using ArchitectsLibrary.Utility;
 using ArchitectsLibrary.Handlers;
+using ArchitectsLibrary.MonoBehaviours;
 
 namespace ArchitectsLibrary.Items.AdvancedMaterials
 {
@@ -61,6 +62,7 @@ namespace ArchitectsLibrary.Items.AdvancedMaterials
                 rb.isKinematic = true;
                 prefab.EnsureComponent<WorldForces>();
                 prefab.EnsureComponent<LargeWorldEntity>().cellLevel = LargeWorldEntity.CellLevel.Near;
+                prefab.EnsureComponent<PrecursorObjectTag>();
 
                 var inspect = prefab.EnsureComponent<InspectOnFirstPickup>();
                 inspect.pickupAble = prefab.GetComponent<Pickupable>();

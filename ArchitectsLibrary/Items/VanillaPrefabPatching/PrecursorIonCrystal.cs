@@ -28,6 +28,7 @@ namespace ArchitectsLibrary.Items.VanillaPrefabPatching
             var prefab = Object.Instantiate(obj);
 
             prefab.EnsureComponent<PrecursorIonStorage>()._capacity = 300000;
+            prefab.EnsureComponent<PrecursorObjectTag>();
             Main.IonCubeCraftModelFix(prefab);
             
             _processedPrefab = Object.Instantiate(prefab);
@@ -54,6 +55,7 @@ namespace ArchitectsLibrary.Items.VanillaPrefabPatching
 
             var prefab = Object.Instantiate(obj);
             prefab.EnsureComponent<PrecursorIonStorage>()._capacity = 300000;
+            prefab.EnsureComponent<PrecursorObjectTag>();
             Main.IonCubeCraftModelFix(prefab);
             
             _processedPrefab = Object.Instantiate(prefab);

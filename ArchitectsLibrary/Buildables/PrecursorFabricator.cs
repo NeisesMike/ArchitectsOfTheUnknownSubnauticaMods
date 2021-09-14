@@ -2,6 +2,7 @@ using System.Collections;
 using ArchitectsLibrary.API;
 using ArchitectsLibrary.Utility;
 using ArchitectsLibrary.Handlers;
+using ArchitectsLibrary.MonoBehaviours;
 using FMODUnity;
 using SMLHelper.V2.Assets;
 using SMLHelper.V2.Crafting;
@@ -65,6 +66,7 @@ namespace ArchitectsLibrary.Buildables
 
             obj.EnsureComponent<TechTag>().type = TechType;
             obj.EnsureComponent<PrefabIdentifier>().ClassId = ClassID;
+            obj.EnsureComponent<PrecursorObjectTag>();
 
             Rigidbody body = obj.AddComponent<Rigidbody>();
             body.isKinematic = true;
@@ -187,6 +189,7 @@ namespace ArchitectsLibrary.Buildables
 
             obj.EnsureComponent<TechTag>().type = TechType;
             obj.EnsureComponent<PrefabIdentifier>().ClassId = ClassID;
+            obj.EnsureComponent<PrecursorObjectTag>();
 
             Rigidbody body = obj.AddComponent<Rigidbody>();
             body.isKinematic = true;

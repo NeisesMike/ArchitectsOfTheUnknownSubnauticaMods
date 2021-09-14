@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ArchitectsLibrary.API;
 using UnityEngine;
 using ArchitectsLibrary.Handlers;
+using ArchitectsLibrary.MonoBehaviours;
 
 namespace ArchitectsLibrary.Items.AdvancedMaterials
 {
@@ -49,6 +50,7 @@ namespace ArchitectsLibrary.Items.AdvancedMaterials
             var vfxFabricating = prefab.GetComponentInChildren<VFXFabricating>(true);
             vfxFabricating.scaleFactor = 1.5f;
             vfxFabricating.localMinY = -0.15f;
+            prefab.EnsureComponent<PrecursorObjectTag>();
         }
 
         protected override Atlas.Sprite GetItemSprite()
