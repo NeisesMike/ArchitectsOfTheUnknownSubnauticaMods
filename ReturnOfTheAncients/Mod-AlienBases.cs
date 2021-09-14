@@ -138,18 +138,18 @@ namespace RotA
             prop_ruinedGuardian.Patch();
             MakeObjectScannable(prop_ruinedGuardian.TechType, ency_ruinedGuardian, 6f);
 
-            secondaryBaseModel = new GenericWorldPrefab("SecondaryBaseModel", LanguageSystem.Get("SecondaryBaseModel"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("SmallCache_Prefab"), new UBERMaterialProperties(7f, 35f, 1f), LargeWorldEntity.CellLevel.Far);
+            secondaryBaseModel = new GenericWorldPrefab("SecondaryBaseModel", LanguageSystem.Get("SecondaryBaseModel"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("SmallCache_Prefab"), new UBERMaterialProperties(7f, 35f, 1f), LargeWorldEntity.CellLevel.Far, true, true);
             secondaryBaseModel.Patch();
             MakeObjectScannable(secondaryBaseModel.TechType, ency_secondaryBaseModel, 6f);
 
-            secretBaseModel = new GenericWorldPrefab("SecretBaseModel", LanguageSystem.Default, LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("SecretRoom_Prefab"), new UBERMaterialProperties(8f, 3f, 1f), LargeWorldEntity.CellLevel.Far);
+            secretBaseModel = new GenericWorldPrefab("SecretBaseModel", LanguageSystem.Default, LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("SecretRoom_Prefab"), new UBERMaterialProperties(8f, 3f, 1f), LargeWorldEntity.CellLevel.Far, true, true);
             secretBaseModel.Patch();
 
             voidBaseModel = new VoidBaseModel("VoidBaseModel", LanguageSystem.Get("VoidBaseModel"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("VoidBase_Prefab"), new UBERMaterialProperties(6f, 15f, 1f), LargeWorldEntity.CellLevel.VeryFar);
             voidBaseModel.Patch();
             MakeObjectScannable(voidBaseModel.TechType, ency_voidBaseModel, 60f);
 
-            guardianTailfinModel = new GenericWorldPrefab("GuardianTailfin", LanguageSystem.Get("GuardianTailfin"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("GuardianTailfin_Prefab"), new UBERMaterialProperties(7f, 1f, 1f), LargeWorldEntity.CellLevel.Near);
+            guardianTailfinModel = new GenericWorldPrefab("GuardianTailfin", LanguageSystem.Get("GuardianTailfin"), LanguageSystem.Default, assetBundle.LoadAsset<GameObject>("GuardianTailfin_Prefab"), new UBERMaterialProperties(7f, 1f, 1f), LargeWorldEntity.CellLevel.Near, true, true);
             guardianTailfinModel.Patch();
             MakeObjectScannable(guardianTailfinModel.TechType, ency_tailfin, 2f);
 

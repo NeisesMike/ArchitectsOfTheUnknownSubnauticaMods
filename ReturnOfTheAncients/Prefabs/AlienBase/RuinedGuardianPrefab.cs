@@ -4,6 +4,7 @@ using SMLHelper.V2.Assets;
 using System.Collections;
 using System.Collections.Generic;
 using ArchitectsLibrary.API;
+using ArchitectsLibrary.MonoBehaviours;
 using SMLHelper.V2.Handlers;
 using UnityEngine;
 using UWE;
@@ -46,6 +47,7 @@ namespace RotA.Prefabs.AlienBase
                 prefab.EnsureComponent<LargeWorldEntity>().cellLevel = LargeWorldEntity.CellLevel.Medium;
                 prefab.EnsureComponent<GuardianEyes>();
                 prefab.EnsureComponent<AudioClipEmitter>().clipPoolPrefix = "Creaking";
+                prefab.EnsureComponent<PrecursorObjectTag>();
                 ECCHelpers.ApplySNShaders(prefab, new UBERMaterialProperties(5f, 1f, 1f));
                 CoroutineHost.StartCoroutine(AddVolumetricLight(prefab.SearchChild("LightPos1").transform));
                 CoroutineHost.StartCoroutine(AddVolumetricLight(prefab.SearchChild("LightPos2").transform));

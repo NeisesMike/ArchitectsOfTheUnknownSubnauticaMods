@@ -21,8 +21,8 @@ namespace RotA.Prefabs.AlienBase
             prefab.EnsureComponent<SphereCollider>().radius = 3.5f;
             prefab.EnsureComponent<LargeWorldEntity>().cellLevel = LargeWorldEntity.CellLevel.Medium;
             prefab.EnsureComponent<BlackHole>();
-            GameObject containment = Object.Instantiate(Mod.assetBundle.LoadAsset<GameObject>("SingularityContainment_Prefab"));
-            containment.transform.SetParent(prefab.transform, false);
+            
+            var containment = Object.Instantiate(Mod.assetBundle.LoadAsset<GameObject>("SingularityContainment_Prefab"), prefab.transform, false);
             containment.transform.localPosition = new Vector3(0f, -4.32f, 0f);
 
             prefab.SetActive(true);
@@ -40,8 +40,8 @@ namespace RotA.Prefabs.AlienBase
             prefab.EnsureComponent<SphereCollider>().radius = 3.5f;
             prefab.EnsureComponent<LargeWorldEntity>().cellLevel = LargeWorldEntity.CellLevel.Medium;
             prefab.EnsureComponent<BlackHole>();
-            GameObject containment = Object.Instantiate(Mod.assetBundle.LoadAsset<GameObject>("SingularityContainment_Prefab"));
-            containment.transform.SetParent(prefab.transform, false);
+            
+            var containment = Object.Instantiate(Mod.assetBundle.LoadAsset<GameObject>("SingularityContainment_Prefab"), prefab.transform, false);
             containment.transform.localPosition = new Vector3(0f, -4.32f, 0f);
             
             prefab.SetActive(true);

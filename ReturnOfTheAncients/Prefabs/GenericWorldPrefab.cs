@@ -2,6 +2,7 @@
 using ECCLibrary;
 using SMLHelper.V2.Assets;
 using System.Collections;
+using ArchitectsLibrary.MonoBehaviours;
 using UnityEngine;
 
 namespace RotA.Prefabs
@@ -11,18 +12,20 @@ namespace RotA.Prefabs
     /// </summary>
     public class GenericWorldPrefab : Spawnable
     {
-        private GameObject model;
+        private readonly GameObject _model;
         protected GameObject prefab;
-        private UBERMaterialProperties materialProperties;
-        private LargeWorldEntity.CellLevel cellLevel;
-        private bool applyPrecursorMaterial;
+        private readonly UBERMaterialProperties _materialProperties;
+        private readonly LargeWorldEntity.CellLevel _cellLevel;
+        private readonly bool _applyPrecursorMaterial;
+        private readonly bool _addPrecursorTag;
 
-        public GenericWorldPrefab(string classId, string friendlyName, string description, GameObject model, UBERMaterialProperties materialProperties, LargeWorldEntity.CellLevel cellLevel, bool applyPrecursorMaterial = true) : base(classId, friendlyName, description)
+        public GenericWorldPrefab(string classId, string friendlyName, string description, GameObject model, UBERMaterialProperties materialProperties, LargeWorldEntity.CellLevel cellLevel, bool addPrecursorTag, bool applyPrecursorMaterial = true) : base(classId, friendlyName, description)
         {
-            this.model = model;
-            this.materialProperties = materialProperties;
-            this.cellLevel = cellLevel;
-            this.applyPrecursorMaterial = applyPrecursorMaterial;
+            this._model = model;
+            this._materialProperties = materialProperties;
+            this._cellLevel = cellLevel;
+            this._applyPrecursorMaterial = applyPrecursorMaterial;
+            this._addPrecursorTag = addPrecursorTag;
         }
 
         public virtual void CustomizePrefab()
@@ -34,9 +37,9 @@ namespace RotA.Prefabs
         {
             if (prefab == null)
             {
-                prefab = GameObject.Instantiate(model);
+                prefab = GameObject.Instantiate(_model);
                 prefab.SetActive(false);
-                prefab.EnsureComponent<LargeWorldEntity>().cellLevel = cellLevel;
+                prefab.EnsureComponent<LargeWorldEntity>().cellLevel = _cellLevel;
                 prefab.EnsureComponent<PrefabIdentifier>().classId = ClassID;
                 prefab.EnsureComponent<TechTag>().type = TechType;
                 prefab.EnsureComponent<SkyApplier>().renderers = prefab.GetComponentsInChildren<Renderer>();
@@ -44,10 +47,15 @@ namespace RotA.Prefabs
                 rb.mass = 10000f;
                 rb.isKinematic = true;
                 prefab.EnsureComponent<ImmuneToPropulsioncannon>();
-                ECCHelpers.ApplySNShaders(prefab, materialProperties);
-                if (applyPrecursorMaterial)
+                ECCHelpers.ApplySNShaders(prefab, _materialProperties);
+                if (_applyPrecursorMaterial)
                 {
-                    MaterialUtils.ApplyPrecursorMaterials(prefab, materialProperties.SpecularInt);
+                    MaterialUtils.ApplyPrecursorMaterials(prefab, _materialProperties.SpecularInt);
+                }
+
+                if (_addPrecursorTag)
+                {
+                    prefab.EnsureComponent<PrecursorObjectTag>();
                 }
                 CustomizePrefab();
                 foreach (Collider col in prefab.GetComponentsInChildren<Collider>())

@@ -1,4 +1,5 @@
-using ArchitectsLibrary.API;
+﻿using ArchitectsLibrary.API;
+using ArchitectsLibrary.MonoBehaviours;
 using ArchitectsLibrary.Utility;
 using RotA.Mono.AlienTech;
 using SMLHelper.V2.Assets;
@@ -30,6 +31,7 @@ namespace RotA.Prefabs.AlienBase
             prefab.EnsureComponent<LargeWorldEntity>().cellLevel = LargeWorldEntity.CellLevel.Medium;
             prefab.EnsureComponent<PrefabIdentifier>().ClassId = ClassID;
             prefab.EnsureComponent<TechTag>().type = TechType;
+            prefab.EnsureComponent<PrecursorObjectTag>();
             MaterialUtils.ApplySNShaders(prefab, 8f);
             MaterialUtils.ApplyPrecursorMaterials(prefab, 8f);
             OmegaFabricatorRoot fabricatorRootComponent = prefab.EnsureComponent<OmegaFabricatorRoot>();
