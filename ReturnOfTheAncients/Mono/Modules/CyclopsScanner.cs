@@ -1,3 +1,4 @@
+using ArchitectsLibrary.API;
 using ArchitectsLibrary.Utility;
 using RotA.Mono.Creatures.GargEssentials;
 using System.Collections;
@@ -17,6 +18,7 @@ namespace RotA.Mono.Modules
         private Material _scanMaterialGargFX;
 
         private bool _canScan;
+        private FMOD_CustomLoopingEmitter _scanSound;
 
         private const float kMaxScanDistance = 200f;
         private const int kCyclopsScannerPower = 10;
@@ -25,6 +27,16 @@ namespace RotA.Mono.Modules
         {
             _cyclops = GetComponent<SubRoot>();
             _cyclopsExternalCams = GetComponentInChildren<CyclopsExternalCams>();
+
+            GameObject scanLoopSFXObj = gameObject.transform.Find("ScanLoopSFX")?.gameObject;
+            if (scanLoopSFXObj)
+            {
+                GameObject scanLoopSFX = new GameObject("ScanLoopSFX");
+                scanLoopSFX.transform.SetParent(transform, false);
+            }
+            _scanSound = scanLoopSFXObj.EnsureComponent<FMOD_CustomLoopingEmitter>();
+            _scanSound.SetAsset(SNAudioEvents.GetFmodAsset(SNAudioEvents.Paths.ScannerScanningLoop));
+
             SetFXActive(false);
 
             var task = CraftData.GetPrefabForTechTypeAsync(TechType.Scanner);
@@ -85,16 +97,21 @@ namespace RotA.Mono.Modules
             SetFXActive(fxActive);
         }
 
-        private void SetFXActive(bool state)
+        private void SetFXActive(bool active)
         {
             //_scanBeam.gameObject.SetActive(state);
 
-            if (state && PDAScanner.scanTarget.isValid)
+            if (active && PDAScanner.scanTarget.isValid)
             {
                 PlayScanFX();
+                if (!_scanSound.playing)
+                {
+                    _scanSound.Play();
+                }
                 return;
             }
             StopScanFX();
+            _scanSound.Stop();
         }
 
         private void PlayScanFX()
