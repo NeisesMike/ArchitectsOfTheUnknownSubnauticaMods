@@ -44,27 +44,32 @@ namespace RotA.Mono.Modules
             var scannerPrefab = task.GetResult();
             var scannerTool = scannerPrefab.GetComponent<ScannerTool>();
             
-            Shader shader = Shader.Find("FX/Scanning");
-            if (shader != null)
+            var shader = Shader.Find("FX/Scanning");
+            if (shader == null) yield break;
+            
+            _scanMaterialCircuitFX = new Material(shader)
             {
-                _scanMaterialCircuitFX = new Material(shader);
-                _scanMaterialCircuitFX.hideFlags = HideFlags.HideAndDontSave;
-                _scanMaterialCircuitFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanCircuitTex);
-                _scanMaterialCircuitFX.SetColor(ShaderPropertyID._Color, scannerTool.scanCircuitColor);
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            _scanMaterialCircuitFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanCircuitTex);
+            _scanMaterialCircuitFX.SetColor(ShaderPropertyID._Color, scannerTool.scanCircuitColor);
 
-                _scanMaterialOrganicFX = new Material(shader);
-                _scanMaterialOrganicFX.hideFlags = HideFlags.HideAndDontSave;
-                _scanMaterialOrganicFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
-                _scanMaterialOrganicFX.SetColor(ShaderPropertyID._Color, scannerTool.scanOrganicColor);
+            _scanMaterialOrganicFX = new Material(shader)
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            _scanMaterialOrganicFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
+            _scanMaterialOrganicFX.SetColor(ShaderPropertyID._Color, scannerTool.scanOrganicColor);
 
-                _scanMaterialGargFX = new Material(shader);
-                _scanMaterialGargFX.hideFlags = HideFlags.HideAndDontSave;
-                _scanMaterialGargFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
-                _scanMaterialGargFX.SetColor(ShaderPropertyID._Color, new Color(0.63f, 0f, 1f));
-            }
+            _scanMaterialGargFX = new Material(shader)
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            _scanMaterialGargFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
+            _scanMaterialGargFX.SetColor(ShaderPropertyID._Color, new Color(0.63f, 0f, 1f));
         }
 
-        void Update()
+        private void Update()
         {
             if (_cyclopsExternalCams != null && _cyclopsExternalCams.usingCamera && _cyclopsExternalCams.cameraIndex == 1)
             {
@@ -87,7 +92,7 @@ namespace RotA.Mono.Modules
                 UpdatePDAScannerTarget(kMaxScanDistance);
                 if (GameInput.GetButtonHeld(GameInput.Button.AltTool))
                 {
-                    for (int i = 0; i < kCyclopsScannerPower; i++)
+                    for (var i = 0; i < kCyclopsScannerPower; i++)
                     {
                         PDAScanner.Scan();
                     }
@@ -116,31 +121,14 @@ namespace RotA.Mono.Modules
 
         private void PlayScanFX()
         {
-            PDAScanner.ScanTarget scanTarget = PDAScanner.scanTarget;
-            if (scanTarget.isValid)
+            var scanTarget = PDAScanner.scanTarget;
+            if (!scanTarget.isValid) return;
+            
+            if (_scanFX != null)
             {
-                if (_scanFX != null)
+                if (_scanFX.gameObject != scanTarget.gameObject)
                 {
-                    if (_scanFX.gameObject != scanTarget.gameObject)
-                    {
-                        StopScanFX();
-                        _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
-                        if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
-                        {
-                            _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
-                            return;
-                        }
-                        if (scanTarget.gameObject.GetComponent<Creature>() != null)
-                        {
-                            _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
-                            return;
-                        }
-                        _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
-                        return;
-                    }
-                }
-                else
-                {
+                    StopScanFX();
                     _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
                     if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
                     {
@@ -153,7 +141,23 @@ namespace RotA.Mono.Modules
                         return;
                     }
                     _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
+                    return;
                 }
+            }
+            else
+            {
+                _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+                if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
+                {
+                    _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
+                    return;
+                }
+                if (scanTarget.gameObject.GetComponent<Creature>() != null)
+                {
+                    _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
+                    return;
+                }
+                _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
             }
         }
 
@@ -170,8 +174,7 @@ namespace RotA.Mono.Modules
         {
             PDAScanner.ScanTarget newScanTarget = default;
             newScanTarget.Invalidate();
-            GameObject candidate;
-            GetTarget(distance, out candidate);
+            GetTarget(distance, out var candidate);
             newScanTarget.Initialize(candidate);
             if (PDAScanner.scanTarget.techType != newScanTarget.techType || PDAScanner.scanTarget.gameObject != newScanTarget.gameObject || PDAScanner.scanTarget.uid != newScanTarget.uid)
             {
@@ -190,9 +193,9 @@ namespace RotA.Mono.Modules
 
         private bool GetTarget(float maxDistance, out GameObject result)
         {
-            Transform cameraTransform = Camera.current.transform;
-            Vector3 position = cameraTransform.position;
-            Vector3 forward = cameraTransform.forward;
+            var cameraTransform = Camera.current.transform;
+            var position = cameraTransform.position;
+            var forward = cameraTransform.forward;
             Ray ray = new Ray(position, forward);
             if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, -1, QueryTriggerInteraction.Ignore))
             {
