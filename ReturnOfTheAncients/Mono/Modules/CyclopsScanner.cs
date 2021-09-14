@@ -21,7 +21,7 @@ namespace RotA.Mono.Modules
         private FMOD_CustomLoopingEmitter _scanSound;
 
         private const float kMaxScanDistance = 200f;
-        private const int kCyclopsScannerPower = 10;
+        private const int kCyclopsScannerPower = 5;
 
         private IEnumerator Start()
         {
