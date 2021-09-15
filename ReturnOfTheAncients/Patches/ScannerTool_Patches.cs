@@ -6,6 +6,7 @@ namespace RotA.Patches
     [HarmonyPatch(typeof(ScannerTool_Patches))]
     public class ScannerTool_Patches
     {
+        // implements a case for when the Scanner Tool's screen state is our custom state (the one for the garg)
         [HarmonyPatch(nameof(ScannerTool.UpdateScreen))]
         [HarmonyPostfix]
         public static void UpdateScreenPostfix(ScannerTool __instance, ScannerTool.ScreenState state)
