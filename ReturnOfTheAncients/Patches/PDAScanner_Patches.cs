@@ -10,6 +10,7 @@ namespace RotA.Patches
     {
         public static readonly StoryGoal ScanAdultGargGoal = new StoryGoal("ScanAdultGargantuan", Story.GoalType.Story, 0f);
 
+        /*
         // checks if the scan time is too long to be scanned without a special tool
         [HarmonyPatch(nameof(PDAScanner.CanScan))]
         [HarmonyPatch(new Type[0] )]
@@ -33,6 +34,7 @@ namespace RotA.Patches
 
             return true;
         }
+        */
         
         // a patch that happens after anything is scanned, currently used for a cool voice line and a story goal that is used by the omega cube fabricator
         [HarmonyPatch(nameof(PDAScanner.Unlock))]
