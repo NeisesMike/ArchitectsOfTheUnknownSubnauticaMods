@@ -214,7 +214,7 @@ namespace RotA.Mono.Modules
             PDAScanner.ScanTarget newScanTarget = default;
             newScanTarget.Invalidate();
             GetTarget(distance, out var candidate, QueryTriggerInteraction.Ignore);
-            if (candidate == null)
+            if (candidate == null || CraftData.GetTechType(candidate) == TechType.None)
             {
                 GetTarget(distance, out candidate, QueryTriggerInteraction.Collide);
             }
