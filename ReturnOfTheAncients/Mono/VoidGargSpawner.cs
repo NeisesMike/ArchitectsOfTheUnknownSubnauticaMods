@@ -74,7 +74,7 @@ namespace RotA.Mono
 
         private static Vector3 GetGargSpawnPoint(Vector3 playerWorldPosition)
         {
-            Vector3 playerPositionAtY0 = new Vector3(playerWorldPosition.x * Random.Range(1f, 3f), 0f, playerWorldPosition.z * Random.Range(1f, 3f));
+            Vector3 playerPositionAtY0 = new Vector3(playerWorldPosition.x, 0f, playerWorldPosition.z) + Random.onUnitSphere * 20f;
             Vector3 directionToAbyss = playerPositionAtY0.normalized;
             Vector3 spawnOffset = directionToAbyss * spawnOutDistance;
             Vector3 spawnPosition = playerWorldPosition + spawnOffset;
