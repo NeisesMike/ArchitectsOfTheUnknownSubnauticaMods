@@ -14,6 +14,8 @@ namespace RotA.Mono.Modules
         private bool _showedInstructions;
         private GameObject _scanBeam;
         private VFXOverlayMaterial _scanFX;
+        
+        // overlay materials that show up on the object that is being scanned
         private Material _scanMaterialCircuitFX;
         private Material _scanMaterialOrganicFX;
         private Material _scanMaterialGargFX;
@@ -23,6 +25,7 @@ namespace RotA.Mono.Modules
         private FMOD_CustomLoopingEmitter _scanSound;
 
         private const float kMaxScanDistance = 500f;
+        // how fast the cyclops scanner scans, compared to the handheld scanner
         private const int kCyclopsScannerPower = 5;
 
         private IEnumerator Start()
