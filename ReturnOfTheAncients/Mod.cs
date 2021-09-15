@@ -53,7 +53,7 @@ namespace RotA
         static ExosuitZapModule exosuitZapModule;
         static ExosuitDashModule exosuitDashModule;
         static SuperDecoy superDecoy;
-        static CyclopsScannerModule cyclopsScannerModule;
+        internal static CyclopsScannerModule cyclopsScannerModule;
 
         static GenericSignalPrefab signal_cragFieldBase;
         static GenericSignalPrefab signal_sparseReefBase;

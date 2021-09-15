@@ -12,7 +12,7 @@ namespace RotA.Mono
         StoryGoal goal = new StoryGoal("GargantuanEncounter", Story.GoalType.Story, 0f);
         public float maxDistance = 300f;
 
-        void Start()
+        private void Start()
         {
             if (StoryGoalManager.main.IsGoalComplete(goal.key))
             {
@@ -20,23 +20,28 @@ namespace RotA.Mono
             }
             else
             {
-                InvokeRepeating("CheckDistance", Random.value, 0.5f);
+                InvokeRepeating(nameof(CheckDistance), Random.value, 0.5f);
             }
         }
 
-        void CheckDistance()
+        private void CheckDistance()
         {
-            if (Vector3.Distance(transform.position, Player.main.transform.position) < maxDistance)
+            if (Vector3.Distance(transform.position, Player.main.transform.position) > maxDistance) return;
+
+            if (GargantuanConditions.PlayerInPrecursorBase()) return;
+            
+            if (StoryGoalManager.main.OnGoalComplete(goal.key))
             {
-                if (!GargantuanConditions.PlayerInPrecursorBase())
-                {
-                    if (StoryGoalManager.main.OnGoalComplete(goal.key))
-                    {
-                        CustomPDALinesManager.PlayPDAVoiceLine(Mod.assetBundle.LoadAsset<AudioClip>("PDAGargEncounter"), "PDAGargEncounter");
-                        Destroy(this);
-                    }
-                }
+                CustomPDALinesManager.PlayPDAVoiceLine(Mod.assetBundle.LoadAsset<AudioClip>("PDAGargEncounter"), "PDAGargEncounter");
+                CancelInvoke();
+                Invoke(nameof(UnlockCyclopsScanner), 14f);
             }
+        }
+
+        private void UnlockCyclopsScanner()
+        {
+            KnownTech.Add(Mod.cyclopsScannerModule.TechType);
+            Destroy(this);
         }
     }
 }
