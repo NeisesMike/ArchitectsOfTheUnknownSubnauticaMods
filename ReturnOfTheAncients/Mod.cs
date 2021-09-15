@@ -90,7 +90,17 @@ namespace RotA
         /// <summary>
         /// this value is only used by this mod, please dont use it or it'll cause conflicts.
         /// </summary>
-        internal static readonly PDAScanner.Result SizeLimitReached = (PDAScanner.Result) 4913563; 
+        internal static readonly PDAScanner.Result SizeLimitScanResult = (PDAScanner.Result) 4913563;
+        
+        /// <summary>
+        /// this value is only used by this mod, please dont use it or it'll cause conflicts.
+        /// </summary>
+        internal static readonly ScannerTool.ScreenState SizeLimitScannerScreenState = (ScannerTool.ScreenState) 431895;
+
+        /// <summary>
+        /// the handheld scanner can not scan anything that takes longer than this many seconds
+        /// </summary>
+        internal const float kHandheldScannerScanTimeLimit = 60f;
 
         /// <summary>
         /// this value is only used by this mod, please dont use it or it'll cause conflicts.
