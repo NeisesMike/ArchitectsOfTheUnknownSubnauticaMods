@@ -126,7 +126,7 @@ namespace RotA.Mono.Modules
                 }
             }
 
-            SetFXActive(_canScan & scanResult == PDAScanner.Result.Scan);
+            SetFXActive(_canScan & scanButtonHeld);
             SetSfxActive(_canScan & scanButtonHeld);
         }
 
