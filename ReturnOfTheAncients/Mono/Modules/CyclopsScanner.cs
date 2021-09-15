@@ -14,7 +14,7 @@ namespace RotA.Mono.Modules
         private bool _showedInstructions;
         private GameObject _scanBeam;
         private VFXOverlayMaterial _scanFX;
-        
+
         // overlay materials that show up on the object that is being scanned
         private Material _scanMaterialCircuitFX;
         private Material _scanMaterialOrganicFX;
@@ -22,36 +22,42 @@ namespace RotA.Mono.Modules
         private Material _scanMaterialPrecursorFX;
 
         private bool _canScan;
-        private FMOD_CustomLoopingEmitter _scanSound;
+        private FMOD_CustomLoopingEmitter _scanSoundEmitter;
 
+        // how far the cyclops scanner can scan, in meters
         private const float kMaxScanDistance = 500f;
+
         // how fast the cyclops scanner scans, compared to the handheld scanner
         private const int kCyclopsScannerPower = 5;
 
         private IEnumerator Start()
         {
+            // set references
             _cyclops = GetComponent<SubRoot>();
             _cyclopsExternalCams = GetComponentInChildren<CyclopsExternalCams>();
 
+            // make sure the sound emitter exists
             var scanLoopObj = gameObject.transform.Find("ScanLoopSFX")?.gameObject;
             if (scanLoopObj == null)
             {
                 scanLoopObj = new GameObject("ScanLoopSFX");
                 scanLoopObj.transform.SetParent(transform, false);
             }
-            _scanSound = scanLoopObj.EnsureComponent<FMOD_CustomLoopingEmitter>();
-            _scanSound.SetAsset(SNAudioEvents.GetFmodAsset(SNAudioEvents.Paths.ScannerScanningLoop));
 
+            _scanSoundEmitter = scanLoopObj.EnsureComponent<FMOD_CustomLoopingEmitter>();
+            _scanSoundEmitter.SetAsset(SNAudioEvents.GetFmodAsset(SNAudioEvents.Paths.ScannerScanningLoop));
+
+            // set scanning fx and material stuff, using stuff from the handheld scanner
             SetFXActive(false);
 
             var task = CraftData.GetPrefabForTechTypeAsync(TechType.Scanner);
             yield return task;
             var scannerPrefab = task.GetResult();
             var scannerTool = scannerPrefab.GetComponent<ScannerTool>();
-            
+
             var shader = Shader.Find("FX/Scanning");
             if (shader == null) yield break;
-            
+
             _scanMaterialCircuitFX = new Material(shader)
             {
                 hideFlags = HideFlags.HideAndDontSave
@@ -72,7 +78,7 @@ namespace RotA.Mono.Modules
             };
             _scanMaterialGargFX.SetTexture(ShaderPropertyID._MainTex, scannerTool.scanOrganicTex);
             _scanMaterialGargFX.SetColor(ShaderPropertyID._Color, new Color(0.63f, 0f, 1f));
-            
+
             _scanMaterialPrecursorFX = new Material(shader)
             {
                 hideFlags = HideFlags.HideAndDontSave
@@ -83,27 +89,32 @@ namespace RotA.Mono.Modules
 
         private void Update()
         {
-            if (_cyclopsExternalCams != null && _cyclopsExternalCams.usingCamera && _cyclopsExternalCams.cameraIndex == 1)
+            // if you're using the camera system and are in the conning tower camera (camera index 1)... 
+            if (_cyclopsExternalCams != null && _cyclopsExternalCams.usingCamera &&
+                _cyclopsExternalCams.cameraIndex == 1)
             {
-                if (!_showedInstructions)
+                if (
+                    !_showedInstructions) // show a hint for using the scanner if you haven't already. don't want to spam it.
                 {
-                    ErrorMessage.AddMessage(LanguageCache.GetButtonFormat("CyclopsScannerInstructions", GameInput.Button.AltTool));
+                    ErrorMessage.AddMessage(LanguageCache.GetButtonFormat("CyclopsScannerInstructions",
+                        GameInput.Button.AltTool)); // show the instructions of how to use this thing
                     _showedInstructions = true;
-                    _canScan = true;
                 }
+
+                _canScan = true;
             }
-            else
+            else // you're not in the correct camera, allow the instruction popup to show next time
             {
                 _showedInstructions = false;
                 _canScan = false;
             }
 
-            bool scanning = GameInput.GetButtonHeld(GameInput.Button.AltTool);
+            var scanButtonHeld = GameInput.GetButtonHeld(GameInput.Button.AltTool); // by default the keyboard key is F
             var scanResult = PDAScanner.Result.None;
             if (_canScan)
             {
                 UpdateScanTarget(kMaxScanDistance);
-                if (scanning)
+                if (scanButtonHeld)
                 {
                     for (var i = 0; i < kCyclopsScannerPower; i++)
                     {
@@ -111,23 +122,25 @@ namespace RotA.Mono.Modules
                     }
                 }
             }
-            SetFXActive(scanResult == PDAScanner.Result.Scan);
-            SetSfxActive(scanning);
+
+            SetFXActive(_canScan & scanResult == PDAScanner.Result.Scan);
+            SetSfxActive(_canScan & scanButtonHeld);
         }
 
+        // simply turn the emitter on or off
         private void SetSfxActive(bool active)
         {
             if (active)
             {
-                if (!_scanSound.playing) _scanSound.Play();
+                if (!_scanSoundEmitter.playing) _scanSoundEmitter.Play();
             }
             else
             {
-                _scanSound.Stop();
+                _scanSoundEmitter.Stop();
             }
-
         }
 
+        // sets all non-audio-related effects active/inactive
         private void SetFXActive(bool active)
         {
             //_scanBeam.gameObject.SetActive(state);
@@ -137,59 +150,51 @@ namespace RotA.Mono.Modules
                 PlayOverlayScanFX();
                 return;
             }
+
             StopScanFX();
         }
 
+        // plays the overlay scan effect on the current scan target
         private void PlayOverlayScanFX()
         {
             var scanTarget = PDAScanner.scanTarget;
             if (!scanTarget.isValid) return;
+
+            if (_scanFX != null) // check if there's already an instance of something being scanned
+            {
+                if (_scanFX.gameObject == scanTarget.gameObject)
+                    return; // if you're already showing a scan overlay fx on the target, you don't need to add more
+
+                StopScanFX(); // remove the existing overlay, if any
+            }
             
-            if (_scanFX != null)
+            // add a new overlay
+
+            _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
+            
+            // check for reasons to add special scan overlay effects
+            
+            if (scanTarget.gameObject.GetComponent<PrecursorObjectTag>())
             {
-                if (_scanFX.gameObject != scanTarget.gameObject)
-                {
-                    StopScanFX();
-                    _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
-                    if (scanTarget.gameObject.GetComponent<PrecursorObjectTag>())
-                    {
-                        _scanFX.ApplyOverlay(_scanMaterialPrecursorFX, "VFXOverlay: Scanning", false, null);
-                        return;
-                    }
-                    if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
-                    {
-                        _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
-                        return;
-                    }
-                    if (scanTarget.gameObject.GetComponent<Creature>() != null)
-                    {
-                        _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
-                        return;
-                    }
-                    _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
-                    return;
-                }
+                _scanFX.ApplyOverlay(_scanMaterialPrecursorFX, "VFXOverlay: Scanning", false, null);
+                return;
             }
-            else
+
+            if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
             {
-                _scanFX = scanTarget.gameObject.AddComponent<VFXOverlayMaterial>();
-                if (scanTarget.gameObject.GetComponent<PrecursorObjectTag>())
-                {
-                    _scanFX.ApplyOverlay(_scanMaterialPrecursorFX, "VFXOverlay: Scanning", false, null);
-                    return;
-                }
-                if (scanTarget.gameObject.GetComponent<GargantuanBehaviour>() != null)
-                {
-                    _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
-                    return;
-                }
-                if (scanTarget.gameObject.GetComponent<Creature>() != null)
-                {
-                    _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
-                    return;
-                }
-                _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
+                _scanFX.ApplyOverlay(_scanMaterialGargFX, "VFXOverlay: Scanning", false, null);
+                return;
             }
+
+            if (scanTarget.gameObject.GetComponent<Creature>() != null)
+            {
+                _scanFX.ApplyOverlay(_scanMaterialOrganicFX, "VFXOverlay: Scanning", false, null);
+                return;
+            }
+            
+            // otherwise, just use a normal scan effect
+            
+            _scanFX.ApplyOverlay(_scanMaterialCircuitFX, "VFXOverlay: Scanning", false, null);
         }
 
         private void StopScanFX()
@@ -200,14 +205,14 @@ namespace RotA.Mono.Modules
             }
         }
 
-        // edited uwe code from PDAScanner class, not mine
+        // edited uwe code from PDAScanner class, not mine, I barely understand what it does
         private void UpdateScanTarget(float distance)
         {
             PDAScanner.ScanTarget newScanTarget = default;
             newScanTarget.Invalidate();
             GetTarget(distance, out var candidate);
             newScanTarget.Initialize(candidate);
-            
+
             if (PDAScanner.scanTarget.techType == newScanTarget.techType &&
                 PDAScanner.scanTarget.gameObject == newScanTarget.gameObject &&
                 PDAScanner.scanTarget.uid == newScanTarget.uid) return;
@@ -216,11 +221,11 @@ namespace RotA.Mono.Modules
             {
                 newScanTarget.progress = progress;
             }
-            
+
             PDAScanner.scanTarget = newScanTarget;
         }
 
-        private bool GetTarget(float maxDistance, out GameObject result)
+        private static void GetTarget(float maxDistance, out GameObject result)
         {
             var cameraTransform = Camera.current.transform;
             var position = cameraTransform.position;
@@ -228,15 +233,18 @@ namespace RotA.Mono.Modules
             if (Physics.Raycast(position, forward, out var hit, maxDistance, -1, QueryTriggerInteraction.Ignore))
             {
                 result = hit.collider.gameObject;
-                return true;
+                return;
             }
+
             result = null;
-            return false;
+            return;
         }
 
         void OnDisable()
         {
+            // when this component is disabled/removed, also disable any sfx/vfx related to it
             SetFXActive(false);
+            SetSfxActive(false);
         }
     }
 }
