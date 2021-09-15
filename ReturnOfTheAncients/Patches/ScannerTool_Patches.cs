@@ -20,5 +20,16 @@ namespace RotA.Patches
             __instance.screenAnimator.pulseMin = 0.1f;
             __instance.screenAnimator.pulseMax = 1f;
         }
+        
+        // the following code calls "UpdateScreen" if the ScanResult from PDAScanner.Scan is "Size Limit"
+        [HarmonyPatch(nameof(ScannerTool.Scan))]
+        [HarmonyPostfix]
+        public static void ScanPostfix(ScannerTool __instance, ref PDAScanner.Result __result)
+        {
+            if (__result == Mod.SizeLimitScanResult)
+            {
+                __instance.UpdateScreen(Mod.SizeLimitScannerScreenState);
+            }
+        }
     }
 }
