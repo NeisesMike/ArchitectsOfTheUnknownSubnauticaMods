@@ -16,12 +16,16 @@ namespace RotA.Patches
         [HarmonyPrefix]
         public static bool CanScanPrefix(ref PDAScanner.Result __result)
         {
+            if (PDAScanner.scanTarget.techType == TechType.None) // if you're scanning for nothing, why bother running this unnecessary code?
+            {
+                return true; // run original code instead
+            }
             if (PDAScanner.scanTarget.progress > 0.1f) // if you've already started scanning this object with a special tool, no need to check again
             {
-                return true; // do run the original method
+                return true; // run original code instead
             }
             var entryData = PDAScanner.GetEntryData(PDAScanner.scanTarget.techType);
-            if (entryData.scanTime >= Mod.kHandheldScannerScanTimeLimit)
+            if (entryData != null && entryData.scanTime >= Mod.kHandheldScannerScanTimeLimit)
             {
                 __result = Mod.SizeLimitScanResult;
                 return false;
