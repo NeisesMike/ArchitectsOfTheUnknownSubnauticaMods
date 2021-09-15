@@ -14,7 +14,7 @@ namespace RotA.Mono
         private TechType adultPrefab;
         private const float spawnOutDistance = 100f;
         private const float spawnYLevel = -940;
-        private const float leashYOffset = 700f;
+        private const float leashYLevel = -240f;
         private Player player;
 
         bool coroutinePlaying = false;
@@ -63,7 +63,7 @@ namespace RotA.Mono
             Vector3 gargSpawnPoint = GetGargSpawnPoint(Player.main.transform.position);
             GameObject newGargantuan = Instantiate(obj, gargSpawnPoint, Quaternion.LookRotation(Vector3.up));
             newGargantuan.SetActive(true);
-            newGargantuan.AddComponent<SetLeashPositionDelayed>().leashPosition = gargSpawnPoint + new Vector3(0f, leashYOffset, 0f);
+            newGargantuan.AddComponent<SetLeashPositionDelayed>().leashPosition = new Vector3(gargSpawnPoint.x, leashYLevel, gargSpawnPoint.z);
             coroutinePlaying = false;
         }
 

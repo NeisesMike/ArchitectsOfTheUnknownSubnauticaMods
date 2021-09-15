@@ -11,7 +11,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         public GargantuanBehaviour gargBehaviour;
         public bool StealthActive { get; private set; }
 
-        private const float kStealthMaxYLevel = -200f;
+        private const float kStealthMaxYLevel = -300f;
 
         private void UpdateStealthState()
         {
