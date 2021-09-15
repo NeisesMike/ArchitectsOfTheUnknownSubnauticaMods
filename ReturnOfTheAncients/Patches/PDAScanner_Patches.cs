@@ -13,7 +13,7 @@ namespace RotA.Patches
         // checks if the scan time is too long to be scanned without a special tool
         [HarmonyPatch(nameof(PDAScanner.CanScan))]
         [HarmonyPatch(new Type[0] )]
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         public static bool CanScanPrefix(ref PDAScanner.Result __result)
         {
             if (PDAScanner.scanTarget.progress > 0.1f) // if you've already started scanning this object with a special tool, no need to check again

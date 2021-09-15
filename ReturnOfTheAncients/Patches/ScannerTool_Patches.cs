@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RotA.Patches
 {
-    [HarmonyPatch(typeof(ScannerTool_Patches))]
+    [HarmonyPatch(typeof(ScannerTool))]
     public class ScannerTool_Patches
     {
         // implements a case for when the Scanner Tool's screen state is our custom state (the one for the garg)
