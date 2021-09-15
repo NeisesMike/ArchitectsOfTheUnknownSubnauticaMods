@@ -23,16 +23,16 @@ namespace RotA.Mono.Singletons
             }
         }
 
-        void Start()
+        private void Start()
         {
             main = this;
             InvokeRepeating(nameof(CheckDistance), Random.value, 10f);
         }
 
-        void CheckDistance()
+        private void CheckDistance()
         {
-            string playerBiome = Player.main.GetBiomeString();
-            if (!VoidGargSpawner.IsVoidBiome(playerBiome) && !playerBiome.StartsWith("precursor", System.StringComparison.OrdinalIgnoreCase) && !playerBiome.StartsWith("prison", System.StringComparison.OrdinalIgnoreCase) && !playerBiome.StartsWith("observatory", System.StringComparison.OrdinalIgnoreCase))
+            var playerBiome = Player.main.GetBiomeString();
+            if (!VoidGargSpawner.IsVoidBiome(playerBiome) && !playerBiome.StartsWith("observatory", System.StringComparison.OrdinalIgnoreCase))
             {
                 float distance = Vector3.Distance(MainCameraControl.main.transform.position, transform.position);
                 if (distance > 500f)
@@ -40,6 +40,11 @@ namespace RotA.Mono.Singletons
                     Destroy(gameObject);
                 }
             }
+            else if (playerBiome.StartsWith("precursor", System.StringComparison.OrdinalIgnoreCase))
+            {
+                Destroy(gameObject, 1f);
+            }
         }
+
     }
 }
