@@ -42,6 +42,8 @@ namespace CreatureEggs.Patches
                     droidDeploy.mainCollider = __instance.gameObject.GetComponent<Collider>();
                     break;
                 case TechType.Jumper:
+                    __instance.activity = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.25f, 1f), new Keyframe(0.75f, 1f), new Keyframe(1f, 1f));
+                    goto case TechType.CrabSquid;
                 case TechType.CrabSquid:
                     __instance.gameObject.EnsureComponent<GroundedChecker>();
                     var walkingManager = __instance.gameObject.EnsureComponent<WalkingManager>();
