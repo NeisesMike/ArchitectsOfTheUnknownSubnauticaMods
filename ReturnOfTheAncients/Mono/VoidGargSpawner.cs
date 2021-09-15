@@ -3,6 +3,7 @@ using RotA.Mono.Singletons;
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RotA.Mono
 {
@@ -73,7 +74,7 @@ namespace RotA.Mono
 
         private static Vector3 GetGargSpawnPoint(Vector3 playerWorldPosition)
         {
-            Vector3 playerPositionAtY0 = new Vector3(playerWorldPosition.x, 0f, playerWorldPosition.z);
+            Vector3 playerPositionAtY0 = new Vector3(playerWorldPosition.x, 0f, playerWorldPosition.z) + Random.onUnitSphere * 20f;
             Vector3 directionToAbyss = playerPositionAtY0.normalized;
             Vector3 spawnOffset = directionToAbyss * spawnOutDistance;
             Vector3 spawnPosition = playerWorldPosition + spawnOffset;
