@@ -28,7 +28,7 @@ namespace RotA.Mono.Modules
         private FMOD_CustomLoopingEmitter _scanSoundEmitter;
 
         // how far the cyclops scanner can scan, in meters
-        private const float kMaxScanDistance = 500f;
+        private const float kMaxScanDistance = 2000;
 
         // how fast the cyclops scanner scans, compared to the handheld scanner
         private const int kCyclopsScannerPower = 5;
