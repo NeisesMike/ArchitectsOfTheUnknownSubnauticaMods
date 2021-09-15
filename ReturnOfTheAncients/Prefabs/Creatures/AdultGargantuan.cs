@@ -54,7 +54,7 @@ namespace RotA.Prefabs.Creatures
 
         public override bool RoarDoesDamage => true;
 
-        public override bool AdvancedCollisions => false;
+        public override GargCollisionsMode CollisionsMode => GargCollisionsMode.Trigger;
 
         public override bool HasEyeTracking => true;
 

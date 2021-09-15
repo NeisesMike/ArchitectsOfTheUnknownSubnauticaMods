@@ -86,11 +86,15 @@ namespace RotA.Prefabs.Creatures
                 {
                     stopPlacingColliders = true;
                 }
-                if (AdvancedCollisions && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine
+                if (CollisionsMode != GargCollisionsMode.None && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine
                 {
                     var newCapsule = currentSpine.AddComponent<CapsuleCollider>();
                     newCapsule.height = 0.85f;
                     newCapsule.direction = 1;
+                    if (CollisionsMode == GargCollisionsMode.Trigger)
+                    {
+                        newCapsule.isTrigger = true;
+                    }
 
                     var firstSpine = currentSpine.name.Contains("001");
                     newCapsule.radius = firstSpine ? 0.14f : 0.2f; //first segment of the garg is a lot thinner than the rest, until it gradually tapers off about halfway
@@ -102,7 +106,7 @@ namespace RotA.Prefabs.Creatures
                 }
                 spines.Add(currentSpine.transform);
             }
-            if (AdvancedCollisions == true)
+            if (CollisionsMode == GargCollisionsMode.Solid)
             {
                 prefab.EnsureComponent<RotA.Mono.Creatures.IgnoreSelfCollisionsAtStart>().collidersToIgnoreEachOther = collidersToIgnore;
             }
@@ -260,187 +264,54 @@ namespace RotA.Prefabs.Creatures
         }
 
         #region Properties for garg variants
-        public virtual bool EnableStealth
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool EnableStealth => false;
 
-        public virtual bool HasEyeTracking
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool HasEyeTracking => false;
 
-        public virtual bool TentaclesHaveTrails
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool TentaclesHaveTrails => true;
 
-        public virtual bool CanRoar
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool CanRoar => true;
 
-        public virtual bool AdvancedCollisions
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual GargCollisionsMode CollisionsMode => GargCollisionsMode.None;
 
-        public virtual bool DoesScreenShake
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public virtual float SpineBoneSnapSpeed
-        {
-            get
-            {
-                return 0.075f;
-            }
-        }
-        public virtual (float, float) RoarDelayMinMax
-        {
-            get
-            {
-                return (11f, 18f);
-            }
-        }
-        public virtual bool UseSwimSounds
-        {
-            get
-            {
-                return true;
-            }
-        }
-        public virtual float JawTentacleSnapSpeed
-        {
-            get
-            {
-                return 6f;
-            }
-        }
-        public virtual bool CanBeScaredByElectricity
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool DoesScreenShake => false;
 
-        public virtual bool CanPerformCyclopsCinematic
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual float SpineBoneSnapSpeed => 0.075f;
 
-        public virtual bool RoarDoesDamage
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual (float, float) RoarDelayMinMax => (11f, 18f);
 
-        public virtual string CloseRoarPrefix
-        {
-            get
-            {
-                return "garg_roar";
-            }
-        }
+        public virtual bool UseSwimSounds => true;
 
-        public virtual bool OneShotsPlayer
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual float JawTentacleSnapSpeed => 6f;
 
-        public virtual string DistantRoarPrefix
-        {
-            get
-            {
-                return "garg_for_anth_distant";
-            }
-        }
+        public virtual bool CanBeScaredByElectricity => false;
 
-        public virtual (float, float) RoarSoundMinMax
-        {
-            get
-            {
-                return (50f, 600f);
-            }
-        }
+        public virtual bool CanPerformCyclopsCinematic => false;
 
-        public virtual float BiteDamage
-        {
-            get
-            {
-                return 1500f;
-            }
-        }
+        public virtual bool RoarDoesDamage => false;
+
+        public virtual string CloseRoarPrefix => "garg_roar";
+
+        public virtual bool OneShotsPlayer => false;
+
+        public virtual string DistantRoarPrefix => "garg_for_anth_distant";
+
+        public virtual (float, float) RoarSoundMinMax => (50f, 600f);
+
+        public virtual float BiteDamage => 1500f;
 
         /// <summary>
         /// Seamoth has 300 health. Vehicle attack lasts 4 seconds.
         /// </summary>
-        public virtual float VehicleDamagePerSecond
-        {
-            get
-            {
-                return 49f;
-            }
-        }
+        public virtual float VehicleDamagePerSecond => 49f;
 
-        public virtual float TentacleSnapSpeed
-        {
-            get
-            {
-                return 6f;
-            }
-        }
+        public virtual float TentacleSnapSpeed => 6f;
 
-        public virtual bool AttackPlayer
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool AttackPlayer => true;
 
-        public virtual float CloseRoarThreshold
-        {
-            get
-            {
-                return 150f;
-            }
-        }
+        public virtual float CloseRoarThreshold => 150f;
 
-        public virtual GargGrabFishMode GrabFishMode
-        {
-            get
-            {
-                return GargGrabFishMode.CantGrabFish;
-            }
-        }
+        public virtual GargGrabFishMode GrabFishMode => GargGrabFishMode.CantGrabFish;
 
         #endregion
 
@@ -469,5 +340,12 @@ namespace RotA.Prefabs.Creatures
         LeviathansOnlyNoSwallow,
         LeviathansOnlyAndSwallow,
         PickupableOnlyAndSwalllow
+    }
+
+    public enum GargCollisionsMode
+    {
+        None,
+        Solid,
+        Trigger
     }
 }
