@@ -14,6 +14,9 @@ namespace RotA.Mono.Modules
         private bool _showedInstructions;
         private GameObject _scanBeam;
         private VFXOverlayMaterial _scanFX;
+        
+        // layer mask for when the cyclops scanner does a second pass for scanning
+        private static readonly LayerMask _triggerRaycastLayerMask = LayerMask.GetMask(new string[]{"Default"});
 
         // overlay materials that show up on the object that is being scanned
         private Material _scanMaterialCircuitFX;
@@ -234,7 +237,7 @@ namespace RotA.Mono.Modules
             var cameraTransform = Camera.current.transform;
             var position = cameraTransform.position;
             var forward = cameraTransform.forward;
-            if (Physics.Raycast(position, forward, out var hit, maxDistance, -1, queryTriggerInteraction))
+            if (Physics.Raycast(position, forward, out var hit, maxDistance, queryTriggerInteraction == QueryTriggerInteraction.Collide? _triggerRaycastLayerMask : -1, queryTriggerInteraction))
             {
                 result = hit.collider.gameObject;
                 return;
