@@ -8,7 +8,7 @@ namespace RotA.Patches
     [HarmonyPatch(typeof(PDAScanner))]
     public class PDAScanner_Patches
     {
-        public static StoryGoal scanAdultGargGoal = new StoryGoal("ScanAdultGargantuan", Story.GoalType.Story, 0f);
+        public static readonly StoryGoal ScanAdultGargGoal = new StoryGoal("ScanAdultGargantuan", Story.GoalType.Story, 0f);
 
         // checks if the scan time is too long to be scanned without a special tool
         [HarmonyPatch(nameof(PDAScanner.CanScan))]
@@ -37,7 +37,7 @@ namespace RotA.Patches
         {
             if (entryData is not null && entryData.key == Mod.gargVoidPrefab.TechType)
             {
-                if (StoryGoalManager.main.OnGoalComplete(scanAdultGargGoal.key) && !uGUI.isLoading)
+                if (StoryGoalManager.main.OnGoalComplete(ScanAdultGargGoal.key) && !uGUI.isLoading)
                 {
                     CustomPDALinesManager.PlayPDAVoiceLine(Mod.assetBundle.LoadAsset<AudioClip>("PDAGargScan"), "PDAScanAdultGargantuan");
                 }

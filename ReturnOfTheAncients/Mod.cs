@@ -95,6 +95,11 @@ namespace RotA
         /// <summary>
         /// this value is only used by this mod, please dont use it or it'll cause conflicts.
         /// </summary>
+        internal static readonly ScannerTool.ScanState SizeLimitScanState = (ScannerTool.ScanState) 43151;
+
+        /// <summary>
+        /// this value is only used by this mod, please dont use it or it'll cause conflicts.
+        /// </summary>
         internal static readonly ScannerTool.ScreenState SizeLimitScannerScreenState = (ScannerTool.ScreenState) 431895;
 
         /// <summary>

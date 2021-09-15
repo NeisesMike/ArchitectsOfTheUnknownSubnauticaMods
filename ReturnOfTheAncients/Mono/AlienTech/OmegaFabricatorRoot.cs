@@ -40,7 +40,7 @@ namespace RotA.Mono.AlienTech
 
         public bool FormulaUnlocked()
         {
-            if (StoryGoalManager.main.IsGoalComplete(Patches.PDAScanner_Patches.scanAdultGargGoal.key))
+            if (StoryGoalManager.main.IsGoalComplete(Patches.PDAScanner_Patches.ScanAdultGargGoal.key))
             {
                 return true;
             }
