@@ -31,6 +31,20 @@ namespace RotA.Commands
             }
 
         }
+        [ConsoleCommand("gargdebug")]
+        public static void GargDebug()
+        {
+            var garg  = Object.FindObjectOfType<GargantuanBehaviour>();
+            if (garg != null)
+            {
+                garg.gameObject.AddComponent<GargDebugger>();
+                ErrorMessage.AddMessage($"Attached debugger onto {garg.gameObject.name}. It will stay until the creature is unloaded.");
+            }
+            else
+            {
+                ErrorMessage.AddMessage("Could not find any Gargantuan Leviathan to debug.");
+            }
+        }
         [ConsoleCommand("rotacommands")]
         public static void RotACommandsList()
         {

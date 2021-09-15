@@ -140,6 +140,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GargDebugger.cs" />
     <Compile Include="Commands\RotACommands.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ILoveCSharp.cs" />
