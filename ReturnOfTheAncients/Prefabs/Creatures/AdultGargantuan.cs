@@ -6,8 +6,18 @@ using UnityEngine;
 
 namespace RotA.Prefabs.Creatures
 {
+    // class used for the adult gargantuan. no creature implements this class, but the void gargantuan inherits from
     public class AdultGargantuan : GargantuanBase
     {
+        private static readonly int _zWrite = Shader.PropertyToID("_ZWrite");
+        private static readonly int _fresnel = Shader.PropertyToID("_Fresnel");
+        private static readonly int _shininess = Shader.PropertyToID("_Shininess");
+        private static readonly int _specInt = Shader.PropertyToID("_SpecInt");
+        private static readonly int _emissionLm = Shader.PropertyToID("_EmissionLM");
+        private static readonly int _emissionLmNight = Shader.PropertyToID("_EmissionLMNight");
+        private static readonly int _glowStrength = Shader.PropertyToID("_GlowStrength");
+        private static readonly int _glowStrengthNight = Shader.PropertyToID("_GlowStrengthNight");
+
         public AdultGargantuan(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
         {
         }
@@ -32,7 +42,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float MaxVelocityForSpeedParameter => 40f;
 
-        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(120f, 30f, 120f), 26f, 10f, 0.1f);
+        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), 40f, 6f, 0.1f);
 
         public override AvoidObstaclesData AvoidObstaclesSettings => new AvoidObstaclesData(1f, false, 30f);
 
@@ -51,6 +61,9 @@ namespace RotA.Prefabs.Creatures
         public override void AddCustomBehaviour(CreatureComponents components)
         {
             base.AddCustomBehaviour(components);
+            
+            // update materials arbitrarily for the transparent appearance
+            
             Renderer mainRenderer = prefab.SearchChild("Gargantuan.004").GetComponent<SkinnedMeshRenderer>();
             Renderer eyeRenderer = prefab.SearchChild("Gargantuan.002").GetComponent<SkinnedMeshRenderer>();
             Renderer insideRenderer = prefab.SearchChild("Gargantuan.003").GetComponent<SkinnedMeshRenderer>();
@@ -61,16 +74,24 @@ namespace RotA.Prefabs.Creatures
             UpdateGargSkeletonMaterial(insideRenderer.materials[0]);
             UpdateGargGutsMaterial(insideRenderer.materials[1]);
             UpdateGargEyeMaterial(eyeRenderer.materials[0]);
+            
+            // idle sounds that are unique to the adult
+            
             var gargPresence = prefab.AddComponent<GargantuanSwimAmbience>();
             gargPresence.swimSoundPrefix = "GargPresence";
-            gargPresence.delay = 54f;
+            gargPresence.delay = 54f; // 54 comes from the length of the GargPresence sound, so it loops *almost* perfectly
+            
             components.locomotion.maxAcceleration = 45f;
             components.swimRandom.swimForward = 1f;
             prefab.GetComponent<StayAtLeashPosition>().swimVelocity = 20f;
 
+            // fixes the turning so it's not insanely fast
+            
             components.locomotion.forwardRotationSpeed = 0.18f;
             components.locomotion.upRotationSpeed = 0.5f;
 
+            // voice line that plays when you're near the gargantuan
+            
             prefab.AddComponent<GargantuanEncounterPDA>();
 
             var avoidObstacles = prefab.GetComponent<AvoidObstacles>();
@@ -81,14 +102,12 @@ namespace RotA.Prefabs.Creatures
             avoidObstacles.scanDistance = 100f;
             avoidObstacles.scanRadius = 100f;
 
-            foreach(Renderer renderer in prefab.GetComponentsInChildren<Renderer>(true))
+            foreach(var renderer in prefab.GetComponentsInChildren<Renderer>(true))
             {
-                if (renderer.gameObject.name == "GargEyeGloss")
-                {
-                    renderer.material.SetFloat("_Fresnel", 0.69f);
-                    renderer.material.SetFloat("_Shininess", 6.14f);
-                    renderer.material.SetFloat("_SpecInt", 30f);
-                }
+                if (renderer.gameObject.name != "GargEyeGloss") continue;
+                renderer.material.SetFloat(_fresnel, 0.69f);
+                renderer.material.SetFloat(_shininess, 6.14f);
+                renderer.material.SetFloat(_specInt, 30f);
             }
 
             components.worldForces.waterDepth = -30f;
@@ -97,41 +116,41 @@ namespace RotA.Prefabs.Creatures
 
         public static void UpdateGargTransparentMaterial(Material material)
         {
-            material.SetInt("_ZWrite", 1);
-            material.SetFloat("_Fresnel", 1);
+            material.SetInt(_zWrite, 1);
+            material.SetFloat(_fresnel, 1);
         }
 
         public static void UpdateGargSolidMaterial(Material material)
         {
-            material.SetFloat("_Fresnel", 0.6f);
-            material.SetFloat("_Shininess", 8f);
-            material.SetFloat("_SpecInt", 30);
-            material.SetFloat("_EmissionLM", 0.1f);
-            material.SetFloat("_EmissionLMNight", 0.1f);
+            material.SetFloat(_fresnel, 0.6f);
+            material.SetFloat(_shininess, 8f);
+            material.SetFloat(_specInt, 30);
+            material.SetFloat(_emissionLm, 0.1f);
+            material.SetFloat(_emissionLmNight, 0.1f);
         }
 
         public static void UpdateGargEyeMaterial(Material material)
         {
-            material.SetFloat("_SpecInt", 15f);
-            material.SetFloat("_GlowStrength", 0.70f);
-            material.SetFloat("_GlowStrengthNight", 0.70f);
+            material.SetFloat(_specInt, 15f);
+            material.SetFloat(_glowStrength, 0.70f);
+            material.SetFloat(_glowStrengthNight, 0.70f);
         }
 
         public static void UpdateGargSkeletonMaterial(Material material)
         {
-            material.SetFloat("_Fresnel", 1);
-            material.SetFloat("_SpecInt", 50);
-            material.SetFloat("_GlowStrength", 2.5f);
-            material.SetFloat("_GlowStrengthNight", 6f);
+            material.SetFloat(_fresnel, 1);
+            material.SetFloat(_specInt, 50);
+            material.SetFloat(_glowStrength, 2.5f);
+            material.SetFloat(_glowStrengthNight, 6f);
         }
 
         public static void UpdateGargGutsMaterial(Material material)
         {
             material.EnableKeyword("MARMO_ALPHA_CLIP");
-            material.SetFloat("_Fresnel", 1f);
-            material.SetFloat("_SpecInt", 50);
-            material.SetFloat("_GlowStrength", 10f);
-            material.SetFloat("_GlowStrengthNight", 10f);
+            material.SetFloat(_fresnel, 1f);
+            material.SetFloat(_specInt, 50);
+            material.SetFloat(_glowStrength, 10f);
+            material.SetFloat(_glowStrengthNight, 10f);
 
         }
 

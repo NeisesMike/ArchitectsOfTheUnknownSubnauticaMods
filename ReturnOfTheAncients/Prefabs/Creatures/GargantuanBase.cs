@@ -69,8 +69,8 @@ namespace RotA.Prefabs.Creatures
 
         public override void AddCustomBehaviour(CreatureComponents components)
         {
-            //advanced collisions stuff
-            List<Collider> collidersToIgnore = new List<Collider>();
+            // advanced collisions stuff, i wrote it and still don't even know what it does
+            var collidersToIgnore = new List<Collider>();
             collidersToIgnore.Add(prefab.GetComponent<Collider>());
             bool stopPlacingColliders = false;
 

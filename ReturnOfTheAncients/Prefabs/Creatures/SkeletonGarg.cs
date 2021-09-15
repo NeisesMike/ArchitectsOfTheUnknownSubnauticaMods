@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace RotA.Prefabs.Creatures
 {
-    //Secret!
+    // Secret!
+    // No actually I have no idea what this does.
     public class SkeletonGarg : GargantuanBase
     {
         public SkeletonGarg(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
