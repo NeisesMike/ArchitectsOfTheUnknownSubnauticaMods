@@ -82,11 +82,11 @@ namespace RotA.Prefabs.Creatures
                 currentSpine = currentSpine.SearchChild("Spine", ECCStringComparison.StartsWith);
                 if (currentSpine == null) continue;
                 
-                if (currentSpine.name.Contains("11")) //dont add colliders after you've gone to the 11th spine
+                if (currentSpine.name.Contains("57")) // dont add colliders after you've gone to the 57th spine. kinda arbitrary.
                 {
                     stopPlacingColliders = true;
                 }
-                if (CollisionsMode != GargCollisionsMode.None && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine
+                if (CollisionsMode != GargCollisionsMode.None && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine (the one named "Spine")
                 {
                     var newCapsule = currentSpine.AddComponent<CapsuleCollider>();
                     newCapsule.height = 0.85f;
