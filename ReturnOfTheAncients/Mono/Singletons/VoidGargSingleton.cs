@@ -26,7 +26,7 @@ namespace RotA.Mono.Singletons
         void Start()
         {
             main = this;
-            InvokeRepeating("CheckDistance", Random.value, 10f);
+            InvokeRepeating(nameof(CheckDistance), Random.value, 10f);
         }
 
         void CheckDistance()
