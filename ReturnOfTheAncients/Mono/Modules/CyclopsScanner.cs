@@ -210,7 +210,11 @@ namespace RotA.Mono.Modules
         {
             PDAScanner.ScanTarget newScanTarget = default;
             newScanTarget.Invalidate();
-            GetTarget(distance, out var candidate);
+            GetTarget(distance, out var candidate, QueryTriggerInteraction.Ignore);
+            if (candidate == null)
+            {
+                GetTarget(distance, out candidate, QueryTriggerInteraction.Collide);
+            }
             newScanTarget.Initialize(candidate);
 
             if (PDAScanner.scanTarget.techType == newScanTarget.techType &&
@@ -225,12 +229,12 @@ namespace RotA.Mono.Modules
             PDAScanner.scanTarget = newScanTarget;
         }
 
-        private static void GetTarget(float maxDistance, out GameObject result)
+        private static void GetTarget(float maxDistance, out GameObject result, QueryTriggerInteraction queryTriggerInteraction)
         {
             var cameraTransform = Camera.current.transform;
             var position = cameraTransform.position;
             var forward = cameraTransform.forward;
-            if (Physics.Raycast(position, forward, out var hit, maxDistance, -1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(position, forward, out var hit, maxDistance, -1, queryTriggerInteraction))
             {
                 result = hit.collider.gameObject;
                 return;
