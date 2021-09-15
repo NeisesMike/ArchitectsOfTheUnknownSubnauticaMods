@@ -20,8 +20,8 @@ namespace RotA.Commands
         
         // commands must be public and static
         
-        [ConsoleCommand("gargdebug")]
-        public static void GargDebug()
+        [ConsoleCommand("gargfreeze")]
+        public static void GargFreeze()
         {
             GargantuanBehaviour[] gargs = Object.FindObjectsOfType<GargantuanBehaviour>();
             foreach (var garg in gargs)
