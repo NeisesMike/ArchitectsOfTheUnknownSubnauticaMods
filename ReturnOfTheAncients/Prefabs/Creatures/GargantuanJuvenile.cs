@@ -21,6 +21,8 @@ namespace RotA.Prefabs.Creatures
 
         public override float EyeFov => 0.35f;
 
+        public override GargCollisionsMode CollisionsMode => GargCollisionsMode.Trigger;
+
         public override float MaxVelocityForSpeedParameter => 15f;
 
         public override EcoTargetType EcoTargetType => EcoTargetType.CuteFish;
