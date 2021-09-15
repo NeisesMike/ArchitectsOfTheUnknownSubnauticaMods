@@ -58,7 +58,7 @@ namespace RotA.Prefabs.Creatures
             MakeAggressiveTo(80f, 2, EcoTargetType.Shark, 0.2f, 2f);
             MakeAggressiveTo(60f, 2, EcoTargetType.Whale, 0.23f, 2.3f);
             MakeAggressiveTo(250f, 7, EcoTargetType.Leviathan, 0.3f, 5f);
-            MakeAggressiveTo(200f, 7, Mod.superDecoyTargetType, 0f, 5f);
+            MakeAggressiveTo(200f, 7, Mod.SuperDecoyTargetType, 0f, 5f);
         }
 
         public override void SetLiveMixinData(ref LiveMixinData liveMixinData)
@@ -80,38 +80,27 @@ namespace RotA.Prefabs.Creatures
             while (currentSpine != null)
             {
                 currentSpine = currentSpine.SearchChild("Spine", ECCStringComparison.StartsWith);
-                if (currentSpine)
+                if (currentSpine == null) continue;
+                
+                if (currentSpine.name.Contains("11")) //dont add colliders after you've gone to the 11th spine
                 {
-                    if (currentSpine.name.Contains("11")) //dont add colliders after you've gone to the 11th spine
-                    {
-                        stopPlacingColliders = true;
-                    }
-                    if (AdvancedCollisions == true && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine
-                    {
-                        var newCapsule = currentSpine.AddComponent<CapsuleCollider>();
-                        newCapsule.height = 0.85f;
-                        newCapsule.direction = 1;
-
-                        bool firstSpine = currentSpine.name.Contains("001");
-                        if (firstSpine)
-                        {
-                            newCapsule.radius = 0.14f; //first segment of the garg is a lot thinner than the rest, until it gradually tapers off about halfway
-                        }
-                        else
-                        {
-                            newCapsule.radius = 0.2f;
-                        }
-                        collidersToIgnore.Add(newCapsule);
-                    }
-                    if (currentSpine.name.Contains("59"))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        spines.Add(currentSpine.transform);
-                    }
+                    stopPlacingColliders = true;
                 }
+                if (AdvancedCollisions && stopPlacingColliders == false && currentSpine.name != "Spine") //dont add collider to first spine
+                {
+                    var newCapsule = currentSpine.AddComponent<CapsuleCollider>();
+                    newCapsule.height = 0.85f;
+                    newCapsule.direction = 1;
+
+                    var firstSpine = currentSpine.name.Contains("001");
+                    newCapsule.radius = firstSpine ? 0.14f : 0.2f; //first segment of the garg is a lot thinner than the rest, until it gradually tapers off about halfway
+                    collidersToIgnore.Add(newCapsule);
+                }
+                if (currentSpine.name.Contains("59"))
+                {
+                    break;
+                }
+                spines.Add(currentSpine.transform);
             }
             if (AdvancedCollisions == true)
             {

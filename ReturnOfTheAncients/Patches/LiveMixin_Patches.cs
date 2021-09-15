@@ -69,7 +69,7 @@ namespace RotA.Patches
 
         public static void ArchitectElectEffect(LiveMixin liveMixin, DamageType type)
         {
-            if (Time.time > liveMixin.timeLastElecDamageEffect + 2.5f && type == Mod.architectElect &&
+            if (Time.time > liveMixin.timeLastElecDamageEffect + 2.5f && type == Mod.ArchitectElect &&
                 liveMixin.electricalDamageEffect is not null)
             {
                 var fixedBounds = liveMixin.gameObject.GetComponent<FixedBounds>();

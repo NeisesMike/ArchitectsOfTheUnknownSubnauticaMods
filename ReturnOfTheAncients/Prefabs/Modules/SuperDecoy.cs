@@ -52,7 +52,7 @@ namespace RotA.Prefabs.Modules
 
             var prefab = task.GetResult();
             var obj = GameObject.Instantiate(prefab);
-            obj.AddComponent<EcoTarget>().type = Mod.superDecoyTargetType;
+            obj.AddComponent<EcoTarget>().type = Mod.SuperDecoyTargetType;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.Shark;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.MediumFish;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.Whale;
@@ -90,7 +90,7 @@ namespace RotA.Prefabs.Modules
         {
             var prefab = CraftData.GetPrefabForTechType(TechType.CyclopsDecoy);
             var obj = GameObject.Instantiate(prefab);
-            obj.AddComponent<EcoTarget>().type = Mod.superDecoyTargetType;
+            obj.AddComponent<EcoTarget>().type = Mod.SuperDecoyTargetType;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.Shark;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.MediumFish;
             obj.AddComponent<EcoTarget>().type = EcoTargetType.Whale;

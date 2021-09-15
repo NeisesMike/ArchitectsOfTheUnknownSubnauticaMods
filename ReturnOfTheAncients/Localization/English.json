@@ -215,11 +215,13 @@
     "KooshBaseSignalSubtitle": "Biological signal interference detected. True signal source is likely to be somewhere in the area.",
     "GuardianEncounterSubtitle": "This machine appears to have recently collapsed to the seafloor. Further research required.",
 
-    // Error messages
+    // Error messages & Miscellaneous prompts 
 
     "OmegaFabricatorFailErrorMessage": "Project \"Omega\" formula incomplete. Further research required.",
     "BlackHoleCrashErrorMessage": "Save Error: File corrupted.",
     "CyclopsScannerInstructions": "Press and hold {0} to activate the Cyclops scanning device.",
+    "ScannerTooBigMessage": "More advanced equipment is required to scan this",
+    "ScannerTooBig": "SIZE LIMIT REACHED",
 
     // Hand targets
 

@@ -103,7 +103,7 @@ namespace RotA.Mono.Modules
                 {
                     if (attackType == AttackType.ArchitectElectricity)
                     {
-                        liveMixin.TakeDamage(originalDamage, transform.position, Mod.architectElect, gameObject);
+                        liveMixin.TakeDamage(originalDamage, transform.position, Mod.ArchitectElect, gameObject);
                         foreach (var archZap in architectElectricityZaps)
                         {
                             archZap.OnDamagedByArchElectricity();
@@ -115,7 +115,7 @@ namespace RotA.Mono.Modules
                     }
                     else if (attackType == AttackType.Both)
                     {
-                        liveMixin.TakeDamage(originalDamage / 2f, transform.position, Mod.architectElect, gameObject);
+                        liveMixin.TakeDamage(originalDamage / 2f, transform.position, Mod.ArchitectElect, gameObject);
                         liveMixin.TakeDamage(originalDamage / 2f, transform.position, DamageType.Electrical, gameObject);
                         foreach (var archZap in architectElectricityZaps)
                         {

@@ -113,7 +113,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         }
         public void OnTakeDamage(DamageInfo damageInfo)
         {
-            if (damageInfo.type == Mod.architectElect)
+            if (damageInfo.type == Mod.ArchitectElect)
             {
                 OnDamagedByArchElectricity();
             }

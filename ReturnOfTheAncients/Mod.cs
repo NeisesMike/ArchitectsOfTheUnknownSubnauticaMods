@@ -85,12 +85,17 @@ namespace RotA
         /// <summary>
         /// this value is only used by this mod, please dont use it or it'll cause conflicts.
         /// </summary>
-        internal static DamageType architectElect = (DamageType)259745135;
+        internal static readonly DamageType ArchitectElect = (DamageType)259745135;
+        
+        /// <summary>
+        /// this value is only used by this mod, please dont use it or it'll cause conflicts.
+        /// </summary>
+        internal static readonly PDAScanner.Result SizeLimitReached = (PDAScanner.Result) 4913563; 
 
         /// <summary>
         /// this value is only used by this mod, please dont use it or it'll cause conflicts.
         /// </summary>
-        internal static EcoTargetType superDecoyTargetType = (EcoTargetType)49013491;
+        internal static readonly EcoTargetType SuperDecoyTargetType = (EcoTargetType)49013491;
 
         private const string assetBundleName = "projectancientsassets";
         private const string gargAssetBundleName = "gargantuanassets";
