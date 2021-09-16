@@ -51,8 +51,7 @@
             playerDeathCinematic.playerViewAnimationName = "seadragon_attack";
         }
 
-        public override void
-            OnTouch(Collider collider) //A long method having to do with interaction with an object and the mouth.
+        public override void OnTouch(Collider collider)
         {
             if (!liveMixin.IsAlive() || Time.time < behaviour.timeCanAttackAgain || playerDeathCinematic.IsCinematicModeActive())
                 return;
@@ -68,7 +67,7 @@
             {
                 LiveMixin targetLm = target.GetComponent<LiveMixin>();
                 Player player = target.GetComponent<Player>();
-                if (player != null) //start player attack logic
+                if (player != null) // start player attack logic
                 {
                     if (!player.CanBeAttacked() || !player.liveMixin.IsAlive() || player.cinematicModeActive ||
                         !PlayerIsKillable() || (gargantuan.Aggression.Value < 0.15f && canAttackPlayer))
@@ -78,7 +77,7 @@
 
                     if (!canAttackPlayer)
                     {
-                        //gargantuan baby nibble behavior
+                        // gargantuan baby nibble behavior
                         Pickupable held = Inventory.main.GetHeld();
                         if (held is not null && held.GetComponent<Creature>() != null)
                         {
@@ -126,10 +125,10 @@
                             return;
                         }
                     }
-                } //end player attack logic
-                else if (canAttackPlayer && grab.GetCanGrabVehicle()) //start vehicle attack logic
+                } // end player attack logic
+                else if (canAttackPlayer && grab.GetCanGrabVehicle()) // start vehicle attack logic
                 {
-                    //try to perform vehicle attack
+                    // try to perform vehicle attack
                     SeaMoth seamoth = target.GetComponent<SeaMoth>();
                     if (seamoth && !seamoth.docked)
                     {
@@ -157,24 +156,23 @@
                             return;
                         }
                     }
-                } //end vehicle attack logic
+                } // end vehicle attack logic
 
-                if (targetLm == null) return; //just in case I guess
-                if (!targetLm.IsAlive()) //dont wanna chomp on a dead fish
+                if (targetLm == null) return; // just in case I guess
+                if (!targetLm.IsAlive()) // dont wanna chomp on a dead fish
                 {
                     return;
                 }
 
-                if (grabFishMode is GargGrabFishMode.LeviathansOnlyAndSwallow or GargGrabFishMode
-                    .LeviathansOnlyNoSwallow) //leviathan attack animation
+                if (grabFishMode is GargGrabFishMode.LeviathansOnlyAndSwallow or GargGrabFishMode.LeviathansOnlyNoSwallow) // leviathan attack animation
                 {
                     Creature otherCreature = target.GetComponent<Creature>();
                     if (otherCreature is not null && otherCreature.liveMixin.IsAlive())
                     {
-                        if ((grabFishMode == GargGrabFishMode.LeviathansOnlyAndSwallow &&
-                             GargantuanConditions.AdultCanGrab(target)) ||
-                            (grabFishMode == GargGrabFishMode.LeviathansOnlyNoSwallow &&
-                             GargantuanConditions.JuvenileCanGrab(target)))
+                        if (grabFishMode == GargGrabFishMode.LeviathansOnlyAndSwallow &&
+                             AdultCanGrab(target) ||
+                            grabFishMode == GargGrabFishMode.LeviathansOnlyNoSwallow &&
+                             JuvenileCanGrab(target))
                         {
                             gargantuan.Aggression.Value -= 0.6f;
                             gargantuan.Hunger.Value = 0f;
@@ -186,7 +184,7 @@
                         }
                     }
                 }
-                else if (grabFishMode == GargGrabFishMode.PickupableOnlyAndSwalllow) //baby "play with food" animation
+                else if (grabFishMode == GargGrabFishMode.PickupableOnlyAndSwalllow) // baby "play with food" animation
                 {
                     Creature otherCreature = target.GetComponent<Creature>();
                     if (otherCreature is not null && otherCreature.liveMixin.IsAlive() &&
@@ -204,9 +202,7 @@
                     }
                 }
 
-                if (
-                    !CanAttackTargetFromPosition(
-                        target)) //any attack past this point must not have collisions between the garg and the target
+                if (!CanAttackTargetFromPosition(target)) // any attack past this point must not have collisions between the garg and the target
                 {
                     return;
                 }
@@ -233,22 +229,17 @@
             }
         }
 
-        private bool
-            CanAttackTargetFromPosition(
-                GameObject target) //A quick raycast check to stop the Gargantuan from attacking through walls. Taken from the game's code (shh).
+        private bool CanAttackTargetFromPosition(GameObject target) // A quick raycast check to stop the Gargantuan from attacking through walls. Taken from the game's code (shh).
         {
             var direction = target.transform.position - transform.position;
             var magnitude = direction.magnitude;
-            var num = UWE.Utils.RaycastIntoSharedBuffer(transform.position, direction, magnitude, -5,
-                QueryTriggerInteraction.Ignore);
+            var num = UWE.Utils.RaycastIntoSharedBuffer(transform.position, direction, magnitude, -5, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < num; i++)
             {
                 var collider = UWE.Utils.sharedHitBuffer[i].collider;
                 var attachedRigidbody = collider.attachedRigidbody;
-                GameObject hitGameObject =
-                    (attachedRigidbody != null) ? attachedRigidbody.gameObject : collider.gameObject;
-                if (!(hitGameObject == target) && !(hitGameObject == base.gameObject) &&
-                    !(hitGameObject.GetComponent<Creature>() != null))
+                var hitGameObject = attachedRigidbody ? attachedRigidbody.gameObject : collider.gameObject;
+                if (hitGameObject != target && hitGameObject != gameObject && hitGameObject.GetComponent<Creature>() == null)
                 {
                     return false;
                 }
@@ -257,31 +248,29 @@
             return true;
         }
 
-        public override float
-            GetBiteDamage(GameObject target) //Extra damage to Cyclops. Otherwise, does its base damage.
+        public override float GetBiteDamage(GameObject target) // Extra damage to Cyclops. Otherwise, does its base damage.
         {
             if (target.GetComponent<SubControl>() != null)
             {
-                return 500f; //cyclops damage
+                return 500f; // cyclops damage
             }
 
-            return biteDamage; //base damage
+            return biteDamage; // base damage
         }
 
-        public void OnVehicleReleased() //Called by gargantuan behavior. Gives a cooldown until the next bite.
+        public void OnVehicleReleased() // Called by gargantuan behavior. Gives a cooldown until the next bite.
         {
             behaviour.timeCanAttackAgain = Time.time + 4f;
         }
 
-        private IEnumerator
-            PerformBiteAttack(GameObject target, float damage) //A delayed attack, to let him chomp down first.
+        private IEnumerator PerformBiteAttack(GameObject target, float damage) // A delayed attack, to let him chomp down first.
         {
             animator.SetFloat(GargRandomAnimParam, UnityEngine.Random.value);
             animator.SetTrigger(GargBiteAnimParam);
             attackSource.clip = biteClipPool.GetRandomClip();
             attackSource.Play();
             yield return new WaitForSeconds(0.5f);
-            if (target is not null)
+            if (target)
             {
                 var targetLm = target.GetComponent<LiveMixin>();
                 if (targetLm)
