@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace RotA.Mono.Creatures.GargEssentials
 {
     // General Condition-based static class
-    static class GargantuanConditions
+    internal static class GargantuanConditions
     {
         public static bool CanSwallowWhole(GameObject gameObject, LiveMixin liveMixin)
         {
@@ -75,23 +75,23 @@ namespace RotA.Mono.Creatures.GargEssentials
         public static bool PlayerInPrecursorBase()
         {
             string biome = Player.main.GetBiomeString();
-            if (biome.StartsWith("precursor", System.StringComparison.OrdinalIgnoreCase) || biome.StartsWith("prison", System.StringComparison.OrdinalIgnoreCase))
+            if (biome.StartsWith("precursor", StringComparison.OrdinalIgnoreCase) || biome.StartsWith("prison", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
             return false;
         }
         
-        private static readonly List<Type> AdultGargGrabbable = new() { typeof(SeaDragon), typeof(ReaperLeviathan), typeof(GhostLeviathan), typeof(GhostLeviatanVoid), typeof(SeaTreader), typeof(Reefback) };
-        private static readonly List<Type> JuvenileGargGrabbable = new() { typeof(ReaperLeviathan), typeof(SeaTreader), typeof(Shocker) };
+        private static readonly List<Type> _adultGargGrabbable = new() { typeof(SeaDragon), typeof(ReaperLeviathan), typeof(GhostLeviathan), typeof(GhostLeviatanVoid), typeof(SeaTreader), typeof(Reefback) };
+        private static readonly List<Type> _juvenileGargGrabbable = new() { typeof(ReaperLeviathan), typeof(SeaTreader), typeof(Shocker) };
 
         public static bool AdultCanGrab(GameObject go)
         {
             var creature = go.GetComponent<Creature>();
             if (creature != null)
             {
-                var otherCreatureType = creature.GetType();
-                if (AdultGargGrabbable.Contains(otherCreatureType)) return true;
+                if (_adultGargGrabbable.Contains(creature.GetType())) 
+                    return true;
             }
 
             return false;
@@ -102,8 +102,8 @@ namespace RotA.Mono.Creatures.GargEssentials
             var creature = go.GetComponent<Creature>();
             if (creature != null)
             {
-                var otherCreatureType = creature.GetType();
-                if (JuvenileGargGrabbable.Contains(otherCreatureType)) return true;
+                if (_juvenileGargGrabbable.Contains(creature.GetType())) 
+                    return true;
             }
 
             return false;
