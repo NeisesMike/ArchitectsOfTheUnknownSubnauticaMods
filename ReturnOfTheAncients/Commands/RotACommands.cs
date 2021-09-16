@@ -1,3 +1,5 @@
+using RotA.Prefabs.Creatures;
+
 namespace RotA.Commands
 {
     using Mono;
@@ -43,6 +45,27 @@ namespace RotA.Commands
             else
             {
                 ErrorMessage.AddMessage("Could not find any Gargantuan Leviathan to debug.");
+            }
+        }
+
+        [ConsoleCommand("gargspinerotation")]
+        public static void GargSpineRotation(float key1, float key2, float key3)
+        {
+            var garg = Object.FindObjectOfType<GargantuanBehaviour>();
+            if (garg != null)
+            {
+                foreach (var tm in garg.GetComponentsInChildren<TrailManager>())
+                {
+                    if (tm.trails.Length > 50) // only the spine trail has this many bones
+                    {
+                        GargantuanBase.FixSpineRotationMultipliers(tm, key1, key2, key3);
+                    }
+                }
+                ErrorMessage.AddMessage($"Updated {garg.gameObject.name} spine rotation.");
+            }
+            else
+            {
+                ErrorMessage.AddMessage("Could not find any Gargantuan Leviathan to edit.");
             }
         }
         [ConsoleCommand("gargtentaclesnap")]
