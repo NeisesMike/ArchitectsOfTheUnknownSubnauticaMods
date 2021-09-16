@@ -14,7 +14,7 @@ namespace RotA.Mono
         private TechType adultPrefab;
         private const float spawnOutDistance = 100f;
         private const float spawnYLevel = -940;
-        private const float leashYLevel = -400f;
+        private const float leashYLevel = -300f;
         private Player player;
 
         bool coroutinePlaying = false;
