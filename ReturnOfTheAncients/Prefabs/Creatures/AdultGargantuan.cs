@@ -18,7 +18,7 @@ namespace RotA.Prefabs.Creatures
         private static readonly int _glowStrength = Shader.PropertyToID("_GlowStrength");
         private static readonly int _glowStrengthNight = Shader.PropertyToID("_GlowStrengthNight");
 
-        private const float kSwimVelocity = 40f;
+        private const float kSwimVelocity = 50f;
         private const float kChargeVelocity = 45f;
 
         public AdultGargantuan(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
@@ -33,7 +33,7 @@ namespace RotA.Prefabs.Creatures
 
         public override bool OneShotsPlayer => true;
 
-        public override float TentacleSnapSpeed => 8f;
+        public override float TentacleSnapSpeed => 12;
 
         public override bool CanBeScaredByElectricity => true;
 
@@ -45,7 +45,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float MaxVelocityForSpeedParameter => kSwimVelocity;
 
-        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), kSwimVelocity, 6f, 0.1f);
+        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), kSwimVelocity, 4f, 0.1f);
 
         public override AvoidObstaclesData AvoidObstaclesSettings => new AvoidObstaclesData(1f, false, 30f);
 
@@ -85,13 +85,14 @@ namespace RotA.Prefabs.Creatures
             gargPresence.delay = 54f; // 54 comes from the length of the GargPresence sound, so it loops *almost* perfectly
             
             components.locomotion.maxAcceleration = 45f;
-            components.swimRandom.swimForward = 1f;
+            components.swimRandom.swimForward = 0.5f;
+            components.swimRandom.onSphere = true;
             prefab.GetComponent<StayAtLeashPosition>().swimVelocity = kSwimVelocity;
 
             // fixes the turning so it's not insanely fast
             
             components.locomotion.forwardRotationSpeed = 0.18f;
-            components.locomotion.upRotationSpeed = 0.5f;
+            components.locomotion.upRotationSpeed = 0.25f;
 
             // voice line that plays when you're near the gargantuan
             
