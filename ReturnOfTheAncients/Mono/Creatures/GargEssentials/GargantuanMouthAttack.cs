@@ -29,7 +29,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         public bool canPerformCyclopsCinematic;
         public GargGrabFishMode grabFishMode;
 
-        void Start()
+        private void Start()
         {
             _garg = GetComponent<Creature>();
             _grab = GetComponent<GargantuanGrab>();
@@ -98,7 +98,7 @@ namespace RotA.Mono.Creatures.GargEssentials
                 return;
             }
 
-            if (!canAttackPlayer && !_grab.GetCanGrabVehicle()) // Vehicles-based attacks
+            if (canAttackPlayer && _grab.GetCanGrabVehicle()) // vehicles-based attacks
             {
                 var vehicle = target.GetComponent<Vehicle>();
 
@@ -133,7 +133,7 @@ namespace RotA.Mono.Creatures.GargEssentials
 
             var targetCreature = target.GetComponent<Creature>();
                 
-            if (!targetCreature)
+            if (!targetCreature) // only attack creatures
                 return;
             
             switch (grabFishMode)
