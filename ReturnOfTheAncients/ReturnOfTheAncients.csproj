@@ -186,6 +186,7 @@
     <Compile Include="Mono\AlienTech\StoryHandTargetPlayAudioClip.cs" />
     <Compile Include="Mono\AlienTech\VoidBaseReveal.cs" />
     <Compile Include="Mono\Cinematics\SecretBaseGargController.cs" />
+    <Compile Include="Mono\Creatures\AggressiveWhenSeeNonPlayer.cs" />
     <Compile Include="Mono\Creatures\Baby\GargantuanBabyGrowthManager.cs" />
     <Compile Include="Mono\Creatures\Baby\GargantuanBabyTeleport.cs" />
     <Compile Include="Mono\Creatures\Baby\GargBabyTarget.cs" />

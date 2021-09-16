@@ -2,6 +2,7 @@ using ECCLibrary;
 using RotA.Mono.Creatures.CreatureActions;
 using RotA.Mono.Creatures.GargEssentials;
 using System.Collections.Generic;
+using RotA.Mono.Creatures;
 using UnityEngine;
 
 namespace RotA.Prefabs.Creatures
@@ -315,7 +316,21 @@ namespace RotA.Prefabs.Creatures
 
         #endregion
 
-        void FixRotationMultipliers(TrailManager tm, float frame1, float frame2)
+        protected void MakeAggressiveToSharksButPlayer(float maxRange, int maxSearchRings, float hungerThreshold, float aggressionSpeed)
+        {
+            var aggressiveWhenSeeTargetNonPlayer = prefab.AddComponent<AggressiveWhenSeeNonPlayer>();
+            aggressiveWhenSeeTargetNonPlayer.maxRangeMultiplier = ECCHelpers.Curve_Flat();
+            aggressiveWhenSeeTargetNonPlayer.distanceAggressionMultiplier = ECCHelpers.Curve_Flat();
+            aggressiveWhenSeeTargetNonPlayer.maxRangeScalar = maxRange;
+            aggressiveWhenSeeTargetNonPlayer.maxSearchRings = maxSearchRings;
+            aggressiveWhenSeeTargetNonPlayer.lastScarePosition = prefab.GetComponent<LastScarePosition>();
+            aggressiveWhenSeeTargetNonPlayer.lastTarget = prefab.GetComponent<LastTarget>();
+            aggressiveWhenSeeTargetNonPlayer.targetType = EcoTargetType.Shark;
+            aggressiveWhenSeeTargetNonPlayer.hungerThreshold = hungerThreshold;
+            aggressiveWhenSeeTargetNonPlayer.aggressionPerSecond = aggressionSpeed;
+        }
+        
+        private void FixRotationMultipliers(TrailManager tm, float frame1, float frame2)
         {
             AnimationCurve curve = new AnimationCurve(new Keyframe[] { new Keyframe(0f, frame1), new Keyframe(1f, frame2) });
             tm.pitchMultiplier = curve;
@@ -323,7 +338,7 @@ namespace RotA.Prefabs.Creatures
             tm.yawMultiplier = curve;
         }
 
-        void FixRotationMultipliers(TrailManager tm, float frame1, float frame2, float frame3)
+        private void FixRotationMultipliers(TrailManager tm, float frame1, float frame2, float frame3)
         {
             AnimationCurve curve = new AnimationCurve(new Keyframe[] { new Keyframe(0f, frame1), new Keyframe(0.7f, frame2), new Keyframe(1f, frame3) });
             tm.pitchMultiplier = curve;
