@@ -37,12 +37,32 @@ namespace RotA.Commands
             var garg  = Object.FindObjectOfType<GargantuanBehaviour>();
             if (garg != null)
             {
-                garg.gameObject.AddComponent<GargDebugger>();
+                garg.gameObject.EnsureComponent<GargDebugger>();
                 ErrorMessage.AddMessage($"Attached debugger onto {garg.gameObject.name}. It will stay until the creature is unloaded.");
             }
             else
             {
                 ErrorMessage.AddMessage("Could not find any Gargantuan Leviathan to debug.");
+            }
+        }
+        [ConsoleCommand("gargtentaclesnap")]
+        public static void GargTentacleSnap(float snapSpeed)
+        {
+            var garg = Object.FindObjectOfType<GargantuanBehaviour>();
+            if (garg != null)
+            {
+                foreach (var tm in garg.GetComponentsInChildren<TrailManager>())
+                {
+                    if (tm.trails.Length < 50) // only the spine trail has this many bones
+                    {
+                        tm.segmentSnapSpeed = snapSpeed;
+                    }
+                }
+                ErrorMessage.AddMessage($"Set {garg.gameObject.name} snap speed to {snapSpeed}.");
+            }
+            else
+            {
+                ErrorMessage.AddMessage("Could not find any Gargantuan Leviathan to edit.");
             }
         }
         [ConsoleCommand("rotacommands")]
