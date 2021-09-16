@@ -59,6 +59,7 @@ namespace RotA.Commands
                     if (tm.trails.Length > 50) // only the spine trail has this many bones
                     {
                         GargantuanBase.FixSpineRotationMultipliers(tm, key1, key2, key3);
+                        tm.InitializeRotationMultipliers();
                     }
                 }
                 ErrorMessage.AddMessage($"Updated {garg.gameObject.name} spine rotation.");
