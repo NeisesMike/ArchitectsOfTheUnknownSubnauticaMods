@@ -33,7 +33,7 @@ namespace RotA.Prefabs.Creatures
 
         public override bool OneShotsPlayer => true;
 
-        public override float TentacleSnapSpeed => 12;
+        public override float TentacleSnapSpeed => 20;
 
         public override bool CanBeScaredByElectricity => true;
 
@@ -45,7 +45,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float MaxVelocityForSpeedParameter => kChargeVelocity + 5f;
 
-        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), kSwimVelocity, 4f, 0.1f);
+        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 125, 250f), kSwimVelocity, 4f, 0.1f);
 
         public override AvoidObstaclesData AvoidObstaclesSettings => new AvoidObstaclesData(1f, false, 30f);
 
@@ -91,8 +91,8 @@ namespace RotA.Prefabs.Creatures
 
             // fixes the turning so it's not insanely fast
             
-            components.locomotion.forwardRotationSpeed = 0.18f;
-            components.locomotion.upRotationSpeed = 0.25f;
+            components.locomotion.forwardRotationSpeed = 0.23f;
+            components.locomotion.upRotationSpeed = 0.5f;
 
             // voice line that plays when you're near the gargantuan
             
