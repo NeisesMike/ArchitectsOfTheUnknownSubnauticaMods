@@ -19,6 +19,7 @@ namespace RotA.Prefabs.Creatures
         private static readonly int _glowStrengthNight = Shader.PropertyToID("_GlowStrengthNight");
 
         private const float kSwimVelocity = 40f;
+        private const float kChargeVelocity = 45f;
 
         public AdultGargantuan(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
         {
@@ -40,7 +41,7 @@ namespace RotA.Prefabs.Creatures
 
         public override ScannableItemData ScannableSettings => new ScannableItemData(true, 60f, Mod.modEncyPath_gargantuan, Mod.gargAssetBundle.LoadAsset<Sprite>("Adult_Popup"), Mod.gargAssetBundle.LoadAsset<Texture2D>("Adult_Ency"));
 
-        public override AttackLastTargetSettings AttackSettings => new AttackLastTargetSettings(0.4f, 45f, 25f, 30f, 17f, 30f);
+        public override AttackLastTargetSettings AttackSettings => new AttackLastTargetSettings(0.4f, kChargeVelocity, 25f, 30f, 17f, 30f);
 
         public override float MaxVelocityForSpeedParameter => 40f;
 
