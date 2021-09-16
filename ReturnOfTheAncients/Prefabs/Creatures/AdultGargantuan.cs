@@ -18,7 +18,7 @@ namespace RotA.Prefabs.Creatures
         private static readonly int _glowStrength = Shader.PropertyToID("_GlowStrength");
         private static readonly int _glowStrengthNight = Shader.PropertyToID("_GlowStrengthNight");
 
-        public const float kSwimVelocity = 40f;
+        private const float kSwimVelocity = 40f;
 
         public AdultGargantuan(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
         {
