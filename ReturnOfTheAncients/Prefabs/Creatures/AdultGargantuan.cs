@@ -55,7 +55,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float SpineBoneSnapSpeed => 0.075f;
 
-        public override (float, float) RoarSoundMinMax => (200f, 1500f);
+        public override (float, float) RoarSoundMinMax => (200f, 10000f);
 
         public override bool RoarDoesDamage => true;
 
