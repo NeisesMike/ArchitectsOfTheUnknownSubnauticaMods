@@ -43,7 +43,7 @@ namespace RotA.Prefabs.Creatures
 
         public override AttackLastTargetSettings AttackSettings => new AttackLastTargetSettings(0.4f, kChargeVelocity, 25f, 30f, 17f, 30f);
 
-        public override float MaxVelocityForSpeedParameter => kSwimVelocity;
+        public override float MaxVelocityForSpeedParameter => kChargeVelocity + 5f;
 
         public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), kSwimVelocity, 6f, 0.1f);
 
