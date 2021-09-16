@@ -17,7 +17,7 @@ namespace RotA.Mono.Creatures.GargEssentials
         private GargantuanGrab _grab;
         private PlayerCinematicController _playerDeathCinematic;
         private Creature _garg;
-        private float _aggressionThreshold;
+        private float _aggressionThreshold = 0.2f;
         
         private static readonly int _gargBiteAnimParam = Animator.StringToHash("bite");
         private static readonly int _gargRandomAnimParam = Animator.StringToHash("random");
