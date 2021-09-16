@@ -53,7 +53,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float TurnSpeed => 0.1f;
 
-        public override (float, float) RoarSoundMinMax => (75f, 1000f);
+        public override (float, float) RoarSoundMinMax => (200f, 1500f);
 
         public override bool RoarDoesDamage => true;
 
