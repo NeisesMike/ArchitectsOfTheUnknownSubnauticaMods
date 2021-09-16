@@ -159,7 +159,7 @@ namespace RotA.Prefabs.Creatures
 
         public override void ApplyAggression()
         {
-            MakeAggressiveTo(120f, 6, EcoTargetType.Shark, 0.2f, 0.5f);
+            MakeAggressiveToSharksButPlayer(120f, 6, 0.2f, 0.5f);
             MakeAggressiveTo(60f, 2, EcoTargetType.Whale, 0.23f, 2.3f);
             MakeAggressiveTo(200f, 7, EcoTargetType.Leviathan, 0.3f, 3f);
             MakeAggressiveTo(200f, 7, Mod.SuperDecoyTargetType, 0f, 5f);
