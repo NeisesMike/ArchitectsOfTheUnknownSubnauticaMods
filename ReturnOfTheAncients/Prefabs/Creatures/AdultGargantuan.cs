@@ -18,6 +18,8 @@ namespace RotA.Prefabs.Creatures
         private static readonly int _glowStrength = Shader.PropertyToID("_GlowStrength");
         private static readonly int _glowStrengthNight = Shader.PropertyToID("_GlowStrengthNight");
 
+        public const float kSwimVelocity = 40f;
+
         public AdultGargantuan(string classId, string friendlyName, string description, GameObject model, Texture2D spriteTexture) : base(classId, friendlyName, description, model, spriteTexture)
         {
         }
@@ -42,7 +44,7 @@ namespace RotA.Prefabs.Creatures
 
         public override float MaxVelocityForSpeedParameter => 40f;
 
-        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), 40f, 6f, 0.1f);
+        public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 60f, 250f), kSwimVelocity, 6f, 0.1f);
 
         public override AvoidObstaclesData AvoidObstaclesSettings => new AvoidObstaclesData(1f, false, 30f);
 
@@ -83,7 +85,7 @@ namespace RotA.Prefabs.Creatures
             
             components.locomotion.maxAcceleration = 45f;
             components.swimRandom.swimForward = 1f;
-            prefab.GetComponent<StayAtLeashPosition>().swimVelocity = 20f;
+            prefab.GetComponent<StayAtLeashPosition>().swimVelocity = kSwimVelocity;
 
             // fixes the turning so it's not insanely fast
             
