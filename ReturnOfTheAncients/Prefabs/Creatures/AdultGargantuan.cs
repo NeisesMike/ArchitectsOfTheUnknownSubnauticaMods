@@ -33,7 +33,7 @@ namespace RotA.Prefabs.Creatures
 
         public override bool OneShotsPlayer => true;
 
-        public override float TentacleSnapSpeed => 20;
+        public override float TentacleSnapSpeed => 35;
 
         public override bool CanBeScaredByElectricity => true;
 
