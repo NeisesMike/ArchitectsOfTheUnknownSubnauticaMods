@@ -118,7 +118,7 @@ namespace RotA.Prefabs.Creatures
             spines.Add(prefab.SearchChild("Tail4", ECCStringComparison.Equals).transform);
             spines.Add(prefab.SearchChild("Tail5", ECCStringComparison.Equals).transform);
             spines.Add(prefab.SearchChild("Tail6", ECCStringComparison.Equals).transform);
-            FixSpineRotationMultipliers(CreateTrail(prefab.SearchChild("Spine"), spines.ToArray(), components, SpineBoneSnapSpeed, 40f), 0.7f, 0.7f, 0.05f);
+            FixSpineRotationMultipliers(CreateTrail(prefab.SearchChild("Spine"), spines.ToArray(), components, SpineBoneSnapSpeed, 40f), 0.26f, 0.26f, 0.05f);
 
             components.creature.Hunger = new CreatureTrait(0f, -0.07f);
 

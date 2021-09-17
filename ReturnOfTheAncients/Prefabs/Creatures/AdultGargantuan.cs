@@ -52,9 +52,7 @@ namespace RotA.Prefabs.Creatures
         public override BehaviourLODLevelsStruct BehaviourLODSettings => new BehaviourLODLevelsStruct(20000, 40000, 100000);
 
         public override float TurnSpeed => 0.1f;
-
-        public override float SpineBoneSnapSpeed => 0.075f;
-
+        
         public override (float, float) RoarSoundMinMax => (200f, 10000f);
 
         public override bool RoarDoesDamage => true;
