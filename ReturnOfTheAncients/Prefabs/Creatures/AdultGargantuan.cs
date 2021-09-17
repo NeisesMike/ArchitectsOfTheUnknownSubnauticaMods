@@ -99,7 +99,6 @@ namespace RotA.Prefabs.Creatures
             prefab.AddComponent<GargantuanEncounterPDA>();
 
             var avoidObstacles = prefab.GetComponent<AvoidObstacles>();
-            avoidObstacles.avoidTerrainOnly = false;
             avoidObstacles.avoidanceDistance = 100f;
             avoidObstacles.avoidanceIterations = 25;
             avoidObstacles.scanDistance = 35;
