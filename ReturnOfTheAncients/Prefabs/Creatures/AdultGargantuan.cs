@@ -91,8 +91,8 @@ namespace RotA.Prefabs.Creatures
 
             // fixes the turning so it's not insanely fast
             
-            components.locomotion.forwardRotationSpeed = 0.23f;
-            components.locomotion.upRotationSpeed = 0.5f;
+            components.locomotion.forwardRotationSpeed = 0.1f;
+            components.locomotion.upRotationSpeed = 0.2f;
 
             // voice line that plays when you're near the gargantuan
             
