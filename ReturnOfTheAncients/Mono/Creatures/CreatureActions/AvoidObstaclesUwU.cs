@@ -37,19 +37,18 @@ namespace RotA.Mono.Creatures.CreatureActions
             if (Time.time > timeNextScan)
             {
                 timeNextScan = Time.time + scanInterval;
-                Transform transform = this.creature.transform;
-                Vector3 origin = transform.TransformPoint(positionOffset);
-                bool flag = false;
-                RaycastHit raycastHit;
+                var transform = creature.transform;
+                var origin = transform.TransformPoint(positionOffset);
+                var flag = false;
                 if (scanRadius > 0f)
                 {
-                    if (Physics.SphereCast(origin, scanRadius, transform.forward, out raycastHit,
+                    if (Physics.SphereCast(origin, scanRadius, transform.forward, out var raycastHit,
                         scanDistance, GetLayerMask(), QueryTriggerInteraction.Ignore))
                     {
                         flag = IsObstacle(raycastHit.collider);
                     }
                 }
-                else if (Physics.Raycast(origin, transform.forward, out raycastHit, scanDistance,
+                else if (Physics.Raycast(origin, transform.forward, out var raycastHit, scanDistance,
                     GetLayerMask(), QueryTriggerInteraction.Ignore))
                 {
                     flag = IsObstacle(raycastHit.collider);
@@ -80,27 +79,27 @@ namespace RotA.Mono.Creatures.CreatureActions
                 }
 
                 timeNextSwim = Time.time + swimInterval;
-                float velocity = Mathf.Lerp(swimVelocity, 0f, this.creature.Tired.Value);
+                var velocity = Mathf.Lerp(swimVelocity, 0f, this.creature.Tired.Value);
                 swimBehaviour.SwimTo(avoidancePosition, velocity);
             }
         }
         
         private void FindSwimDirection()
         {
-            Vector3 vector = creature.transform.TransformPoint(positionOffset);
-            avoidancePosition = vector;
+            var point = creature.transform.TransformPoint(positionOffset);
+            avoidancePosition = point;
             timeStartAvoidance = Time.time;
             swimDirectionFound = false;
-            int layerMask = GetLayerMask();
-            int num = 0;
-            while ((float) num < avoidanceIterations)
+            var layerMask = GetLayerMask();
+            var num = 0;
+            while (num < avoidanceIterations)
             {
-                Vector3 randomDirection = GetRandomDirection();
+                var randomDirection = GetRandomDirection();
                 RaycastHit raycastHit;
-                if (!Physics.Raycast(vector, randomDirection, out raycastHit, avoidanceDistance, layerMask,
-                    QueryTriggerInteraction.Ignore) || !IsObstacle(raycastHit.collider))
+                if (!Physics.Raycast(point, randomDirection, out raycastHit, avoidanceDistance, layerMask, QueryTriggerInteraction.Ignore) || 
+                    !IsObstacle(raycastHit.collider))
                 {
-                    avoidancePosition = vector + randomDirection * avoidanceDistance;
+                    avoidancePosition = point + randomDirection * avoidanceDistance;
                     swimDirectionFound = true;
                     return;
                 }
@@ -128,38 +127,17 @@ namespace RotA.Mono.Creatures.CreatureActions
         
         protected virtual bool IsObstacle(Collider collider)
         {
-            GameObject gameObject = (lastTarget != null) ? lastTarget.target : null;
-            if (!avoidTerrainOnly && gameObject != null)
+            var targetObj = lastTarget ? lastTarget.target : null;
+            if (!avoidTerrainOnly && targetObj != null)
             {
-                Rigidbody attachedRigidbody = collider.attachedRigidbody;
-                if (((attachedRigidbody != null) ? attachedRigidbody.gameObject : collider.gameObject) == gameObject)
+                var attachedRigidbody = collider.attachedRigidbody;
+                if ((attachedRigidbody ? attachedRigidbody.gameObject : collider.gameObject) == targetObj)
                 {
                     return false;
                 }
             }
 
             return true;
-        }
-        
-        private void OnDrawGizmosSelected()
-        {
-            if (!enabled)
-            {
-                return;
-            }
-
-            Transform transform = creature.transform;
-            Vector3 vector = transform.TransformPoint(positionOffset);
-            bool flag = false;
-            RaycastHit raycastHit;
-            if (Physics.Raycast(vector, transform.forward, out raycastHit, scanDistance, GetLayerMask(),
-                QueryTriggerInteraction.Ignore))
-            {
-                flag = IsObstacle(raycastHit.collider);
-            }
-
-            Gizmos.color = (flag ? Color.red : Color.green);
-            Gizmos.DrawLine(vector, vector + transform.forward * scanDistance);
         }
     }
 }
