@@ -1,6 +1,7 @@
 using ArchitectsLibrary.API;
 using ECCLibrary;
 using RotA.Mono;
+using RotA.Mono.Creatures.CreatureActions;
 using RotA.Mono.Creatures.GargEssentials;
 using UnityEngine;
 
@@ -46,8 +47,6 @@ namespace RotA.Prefabs.Creatures
         public override float MaxVelocityForSpeedParameter => kChargeVelocity + 10f;
 
         public override SwimRandomData SwimRandomSettings => new SwimRandomData(true, new Vector3(250f, 125, 250f), kSwimVelocity, 4f, 0.1f);
-
-        public override AvoidObstaclesData AvoidObstaclesSettings => new AvoidObstaclesData(1f, false, 30f);
 
         public override BehaviourLODLevelsStruct BehaviourLODSettings => new BehaviourLODLevelsStruct(20000, 40000, 100000);
 
@@ -97,8 +96,13 @@ namespace RotA.Prefabs.Creatures
             // voice line that plays when you're near the gargantuan
             
             prefab.AddComponent<GargantuanEncounterPDA>();
+            
+            Object.DestroyImmediate(prefab.GetComponent<AvoidObstacles>());
+            
+            AdvancedAvoidObstacles(1f, false, 30f);
 
-            var avoidObstacles = prefab.GetComponent<AvoidObstacles>();
+            var avoidObstacles = prefab.GetComponent<AvoidObstaclesUwU>();
+            avoidObstacles.lastTarget = components.lastTarget;
             avoidObstacles.avoidanceDistance = 100f;
             avoidObstacles.avoidanceIterations = 25;
             avoidObstacles.scanDistance = 35;
@@ -116,6 +120,17 @@ namespace RotA.Prefabs.Creatures
 
             components.worldForces.waterDepth = -30f;
             components.worldForces.aboveWaterGravity = 25f;
+        }
+
+        protected void AdvancedAvoidObstacles(float evaluatePriority, bool terrainOnly, float avoidDistance)
+        {
+            AvoidObstaclesUwU avoidObstacles = prefab.AddComponent<AvoidObstaclesUwU>();
+            avoidObstacles.avoidTerrainOnly = terrainOnly;
+            avoidObstacles.avoidanceDistance = avoidDistance;
+            avoidObstacles.scanDistance = avoidDistance;
+            avoidObstacles.priorityMultiplier = ECCHelpers.Curve_Flat();
+            avoidObstacles.evaluatePriority = evaluatePriority;
+            avoidObstacles.swimVelocity = SwimRandomSettings.SwimVelocity;
         }
 
         public static void UpdateGargTransparentMaterial(Material material)
